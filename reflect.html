@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="color-scheme" content="light">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>생활법률 합동상담 · 성찰 과제</title>
+<meta name="theme-color" content="#FFFFFF">
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="common.css">
+<style>
+.q{margin-bottom:1.1rem;}
+.q label{display:flex;gap:.5rem;align-items:baseline;font-weight:700;font-size:.98rem;margin-bottom:.15rem;}
+.q label i{font-style:normal;flex:none;display:inline-grid;place-items:center;width:1.4rem;height:1.4rem;border-radius:50%;background:var(--brand);color:#fff;font-size:.78rem;}
+.q p{margin:0 0 .45rem 1.9rem;font-size:.84rem;color:var(--t3);line-height:1.5;}
+.q .cnt{text-align:right;font-size:.74rem;color:var(--t4);margin-top:.2rem;}
+.done h2::before{content:"✓";display:inline-grid;place-items:center;width:1.7rem;height:1.7rem;border-radius:50%;background:var(--brand);color:#fff;font-size:.95rem;margin-right:.5rem;}
+</style>
+</head>
+<body>
+<header class="top"><div class="top-in"><span class="brand">성찰 과제</span><span class="grow"></span><span class="chip" id="meChip">—</span></div></header>
+<div class="wrap">
+  <div class="hero"><small>생활법률 합동상담</small><b>해설을 읽고 돌아보기</b><p>정답을 맞혔는지보다 <b style="display:inline;font-size:inherit">어떻게 생각했는지</b>가 중요합니다. 솔직하게 써 주세요.</p></div>
+
+  <section class="card done" id="doneBox" hidden><h2 style="display:flex;align-items:center">제출했습니다</h2><p class="note" id="doneMsg"></p>
+    <button class="btn sm ghost" id="btnEdit" style="margin-top:.6rem">고쳐서 다시 내기</button></section>
+
+  <div id="formArea">
+    <section class="card"><h2>나는 누구인가요</h2><p class="sub">신청 명단에 있는 이름과 학번이어야 받습니다.</p>
+      <div class="pick" id="pickG"></div>
+      <div class="pick" id="pickN" style="margin-top:.6rem"></div>
+      <input id="sidIn" inputmode="numeric" maxlength="5" placeholder="내 학번 다섯 자리" style="margin-top:.6rem">
+      <input id="career" maxlength="30" placeholder="희망 진로나 관심 분야" style="margin-top:.5rem">
+    </section>
+    <section class="card"><h2>활동을 돌아보며</h2><p class="sub">한 문항에 두세 문장이면 충분합니다.</p><div id="qs"></div><p class="note" id="formNote"></p></section>
+  </div>
+</div>
+<div class="actionbar" id="bar"><div class="actionbar-in"><span class="note" id="barNote"></span><button class="btn primary" id="btnSubmit">성찰 과제 제출</button></div></div>
+
+<script src="config.js"></script>
+<script src="db.js"></script>
+<script src="cases.js"></script>
+<script src="roster.js"></script>
+<script>
+(function () {
+  'use strict';
+  const el = (id) => document.getElementById(id);
+  const esc = (s) => String(s == null ? '' : s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const R = LAWROSTER, ROOM = LAWDB.roomId, RC = ['var(--r0)', 'var(--r1)', 'var(--r2)', 'var(--r3)'];
+  const Q = [
+    ['내 판단을 해설과 비교하기', '결론이 같았나요, 달랐나요? 달랐다면 어떤 증거나 조문을 다르게 보았나요?'],
+    ['처음 생각이 바뀐 순간', '증거를 읽거나 조문을 찾거나 회의를 하면서 생각이 달라진 순간이 있었나요? 무엇 때문이었나요?'],
+    ['다른 분야에서 배운 것', '다른 전문가의 판단을 듣고, 내 분야의 결론이 달라지거나 넓어진 점은 무엇인가요?'],
+    ['의뢰인의 입장에서', '법이 의뢰인처럼 약한 처지의 사람을 어떻게 보호하고 있었나요? 내가 전문가라면 의뢰인을 대할 때 무엇을 가장 조심하겠나요?'],
+    ['나의 진로와 연결하기', '오늘 맡은 역할의 일이 내가 꿈꾸는 직업이나 관심 분야와 어떻게 이어지나요?']
+  ];
+  const DK = 'lawcounsel.reflect.' + ROOM;
+  let SIGN = {}, REF = {}, link = 'connecting', g = 0, sid = '', ans = ['', '', '', '', ''];
+  try { const d = JSON.parse(localStorage.getItem(DK) || 'null'); if (d) { g = d.g || 0; sid = d.sid || ''; ans = d.ans || ans; el('career').value = d.career || ''; } } catch (e) {}
+  try { const me = JSON.parse(localStorage.getItem('lawcounsel.me.' + ROOM) || 'null'); if (me && !sid) sid = me.sid; } catch (e) {}
+  const save = () => { try { localStorage.setItem(DK, JSON.stringify({ g: g, sid: sid, ans: ans, career: el('career').value })); } catch (e) {} };
+
+  el('qs').innerHTML = Q.map((q, i) => '<div class="q"><label for="q' + i + '"><i>' + (i + 1) + '</i>' + esc(q[0]) + '</label><p>' + esc(q[1]) + '</p>' +
+    '<textarea id="q' + i + '" maxlength="500"></textarea><div class="cnt" id="c' + i + '">0자</div></div>').join('');
+  Q.forEach((q, i) => { el('q' + i).value = ans[i] || ''; el('c' + i).textContent = (ans[i] || '').length + '자';
+    el('q' + i).oninput = function () { ans[i] = this.value; el('c' + i).textContent = this.value.length + '자'; this.classList.remove('bad'); save(); }; });
+  el('career').oninput = save;
+  el('sidIn').oninput = function () { this.value = this.value.replace(/[^0-9]/g, ''); this.classList.remove('bad'); };
+
+  function renderWho() {
+    const gs = R.groups(SIGN);
+    if (sid && !g) { const f = R.find(SIGN, sid); if (f) g = f.group.g; }
+    el('pickG').innerHTML = gs.map((x) => '<button data-g="' + x.g + '" aria-pressed="' + (g === x.g) + '"><b>' + esc(x.label) + '</b><span>' + x.members.map((m) => esc(m.name)).join(' · ') + '</span></button>').join('') ||
+      '<p class="note">신청 명단을 불러오는 중…</p>';
+    el('pickG').querySelectorAll('button').forEach((b) => b.onclick = function () { g = +this.dataset.g; sid = ''; save(); renderWho(); });
+    const gr = gs.find((x) => x.g === g);
+    el('pickN').innerHTML = gr ? gr.members.map((m) => '<button data-s="' + esc(m.sid) + '" aria-pressed="' + (sid === String(m.sid)) + '"><b>' + esc(m.name) + '</b><span class="rtag" style="color:' + RC[m.r] + '">' + esc(m.role) + '</span></button>').join('') : '';
+    el('pickN').querySelectorAll('button').forEach((b) => b.onclick = function () {
+      sid = this.dataset.s; const f = R.find(SIGN, sid); if (f && !el('career').value) el('career').value = f.member.career || '';
+      save(); renderWho(); el('sidIn').focus(); });
+    el('sidIn').hidden = !sid;
+    const f = sid ? R.find(SIGN, sid) : null;
+    el('meChip').textContent = f ? f.group.label + ' · ' + f.member.name : '—';
+    renderDone();
+  }
+  let editing = false;
+  function renderDone() {
+    const mine = sid && REF['s' + sid];
+    const show = !!mine && !editing;
+    el('doneBox').hidden = !show; el('formArea').hidden = show; el('bar').hidden = show;
+    if (mine) el('doneMsg').textContent = new Date(mine.at).toLocaleString('ko-KR', { month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false }) + '에 받았습니다. 고마워요!';
+    el('barNote').className = 'note' + (link === 'local' || link === 'error' ? ' warn' : '');
+    el('barNote').textContent = { local: '연습 모드 — 제출이 저장되지 않습니다.', error: '선생님 화면에 연결하지 못했습니다.', offline: '인터넷이 끊겼습니다. 다시 붙는 중입니다.' }[link] || '';
+  }
+  el('btnEdit').onclick = function () {
+    const m = REF['s' + sid]; if (m) { ans = (m.ans || ans).slice(); Q.forEach((q, i) => { el('q' + i).value = ans[i] || ''; el('c' + i).textContent = (ans[i] || '').length + '자'; }); el('career').value = m.career || el('career').value; }
+    editing = true; renderDone();
+  };
+  el('btnSubmit').onclick = function () {
+    const note = el('formNote'), f = sid ? R.find(SIGN, sid) : null;
+    if (!f) { note.className = 'note warn'; note.textContent = '내 조와 이름을 먼저 고르세요.'; el('pickG').scrollIntoView({ block: 'center', behavior: 'smooth' }); return; }
+    if (el('sidIn').value.trim() !== String(sid)) { el('sidIn').classList.add('bad'); note.className = 'note warn'; note.textContent = '학번이 신청 명단과 다릅니다.'; el('sidIn').focus(); return; }
+    const empty = ans.findIndex((a) => String(a || '').trim().length < 5);
+    if (empty >= 0) { el('q' + empty).classList.add('bad'); note.className = 'note warn'; note.textContent = (empty + 1) + '번 문항을 채워 주세요.'; el('q' + empty).focus(); return; }
+    const btn = this; btn.disabled = true; btn.textContent = '보내는 중…';
+    LAWDB.submitReflect(sid, { name: f.member.name, sid: sid, g: f.group.g, role: f.member.role, career: el('career').value.trim(), ans: ans.map((a) => String(a).trim()) })
+      .then(() => { editing = false; note.textContent = ''; renderDone(); window.scrollTo({ top: 0, behavior: 'smooth' }); })
+      .catch(() => { note.className = 'note warn'; note.textContent = '보내지 못했습니다. 다시 눌러 주세요. 쓴 내용은 이 휴대폰에 남아 있습니다.'; })
+      .finally(() => { btn.disabled = false; btn.textContent = '성찰 과제 제출'; });
+  };
+
+  LAWDB.onSignups((o) => { SIGN = o || {}; renderWho(); });
+  LAWDB.onReflect((o) => { REF = o || {}; renderDone(); });
+  LAWDB.onStatus((s) => { link = s.state; renderDone(); });
+  renderWho();
+})();
+</script>
+</body>
+</html>

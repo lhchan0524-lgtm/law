@@ -1,0 +1,671 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="color-scheme" content="light">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>생활법률 합동상담 콘솔</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+:root{color-scheme:light;
+  --font:"Pretendard Variable",Pretendard,-apple-system,system-ui,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --bg:#F2F4F6; --surface:#fff; --s2:#F9FAFB; --fill:#F2F4F6; --line:#EEF0F2; --line2:#DDE1E5;
+  --t1:#191F28; --t2:#4E5968; --t3:#8B95A1; --t4:#B0B8C1;
+  --brand:#185ABD; --brand-h:#144FA8; --soft:#E8F0FB; --ink:#103F91; --deep:#0E3270;
+  --warn:#B25E00; --warn-soft:#FFF2D9; --bad:#E42939; --ok:#1B7F4B; --hl:#FFF200;
+  --r0:#1f4e8c; --r1:#8c1f2b; --r2:#2c6b3f; --r3:#8a5a12;
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--bg);color:var(--t1);font-family:var(--font);font-size:15px;line-height:1.5;letter-spacing:-.01em;word-break:keep-all;-webkit-font-smoothing:antialiased;}
+[hidden]{display:none!important;}
+button,input,textarea,select{font-family:inherit;font-size:inherit;color:inherit;}
+button{cursor:pointer;}
+.num{font-variant-numeric:tabular-nums;}
+mark{background:linear-gradient(transparent 58%,var(--hl) 58%);color:inherit;font-weight:800;padding:0 .08em;}
+
+/* ───────── 콘솔 ───────── */
+.ctop{position:sticky;top:0;z-index:20;background:var(--brand);color:#fff;}
+.ctop-in{max-width:76rem;margin:0 auto;padding:.7rem 1.2rem;display:flex;align-items:center;gap:.7rem;flex-wrap:wrap;}
+.logo{display:flex;align-items:center;gap:.5rem;font-weight:800;font-size:1.05rem;}
+.logo::before{content:"¶";display:inline-grid;place-items:center;width:26px;height:26px;border-radius:8px;background:#fff;color:var(--brand);font-weight:800;}
+.grow{flex:1;}
+.dot{display:inline-flex;align-items:center;gap:.35rem;font-size:.8rem;background:rgba(255,255,255,.15);border-radius:999px;padding:.2rem .7rem;}
+.dot::before{content:"";width:8px;height:8px;border-radius:50%;background:#FFD24D;}
+.dot.online::before{background:#5BE49B;} .dot.error::before,.dot.offline::before{background:#FF8A8A;}
+.tbtn{border:0;border-radius:10px;background:#fff;color:var(--brand);font-weight:800;padding:.45rem .9rem;font-size:.88rem;}
+.tabs{background:var(--surface);border-bottom:1px solid var(--line);position:sticky;top:3.1rem;z-index:15;}
+.tabs-in{max-width:76rem;margin:0 auto;padding:0 1.2rem;display:flex;gap:.2rem;overflow-x:auto;}
+.tabs button{border:0;background:none;padding:.75rem 1rem;font-weight:700;color:var(--t3);border-bottom:2.5px solid transparent;white-space:nowrap;}
+.tabs button[aria-selected="true"]{color:var(--brand);border-bottom-color:var(--brand);}
+.warnbar{background:var(--warn-soft);color:var(--warn);font-weight:700;}
+.warnbar .in{max-width:76rem;margin:0 auto;padding:.55rem 1.2rem;display:flex;gap:.7rem;align-items:center;flex-wrap:wrap;font-size:.9rem;}
+main.c{max-width:76rem;margin:0 auto;padding:1rem 1.2rem 4rem;}
+.card{background:var(--surface);border-radius:18px;padding:1.15rem 1.25rem;margin-bottom:1rem;}
+.card h2{margin:0 0 .6rem;font-size:1.05rem;letter-spacing:-.02em;display:flex;align-items:center;gap:.5rem;}
+.card h2 small{font-weight:500;color:var(--t3);font-size:.82rem;}
+.note{font-size:.84rem;color:var(--t3);} .note.warn{color:var(--warn);font-weight:600;} .note.ok{color:var(--ok);font-weight:600;}
+.row{display:flex;gap:.5rem;align-items:center;flex-wrap:wrap;}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.3rem;border:0;height:2.5rem;padding:0 1rem;border-radius:11px;background:var(--fill);font-weight:700;font-size:.9rem;text-decoration:none;color:var(--t1);}
+.btn.primary{background:var(--brand);color:#fff;} .btn.primary:hover{background:var(--brand-h);}
+.btn.ghost{background:transparent;box-shadow:inset 0 0 0 1.5px var(--line2);color:var(--t2);}
+.btn.danger{background:#FDECEC;color:var(--bad);} .btn.sm{height:2rem;padding:0 .7rem;font-size:.8rem;border-radius:9px;}
+.btn.lg{height:3rem;font-size:1rem;padding:0 1.4rem;border-radius:13px;}
+.btn:disabled{opacity:.35;cursor:not-allowed;}
+.seg{display:inline-flex;background:var(--fill);border-radius:11px;padding:3px;gap:2px;}
+.seg button{border:0;background:none;border-radius:9px;padding:.4rem .85rem;font-weight:700;font-size:.86rem;color:var(--t3);}
+.seg button[aria-pressed="true"]{background:#fff;color:var(--brand);box-shadow:0 1px 3px rgba(0,0,0,.08);}
+input.txt,textarea.txt,select.txt{width:100%;border:1.5px solid var(--line2);border-radius:10px;padding:.5rem .7rem;background:#fff;font-size:.9rem;}
+textarea.txt{min-height:5.5rem;resize:vertical;line-height:1.55;}
+.grid2{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:1rem;align-items:start;}
+@media (max-width:900px){.grid2{grid-template-columns:1fr;}}
+
+.stepnow{display:flex;gap:1rem;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:.8rem;}
+.stepnow b{font-size:1.45rem;letter-spacing:-.03em;} .stepnow small{display:block;color:var(--t3);font-weight:600;font-size:.82rem;}
+.steps{display:flex;flex-wrap:wrap;gap:.35rem;margin-bottom:.9rem;}
+.steps button{border:0;border-radius:999px;padding:.35rem .8rem;font-size:.82rem;font-weight:700;background:var(--fill);color:var(--t3);}
+.steps button.done{background:var(--soft);color:var(--ink);} .steps button.now{background:var(--brand);color:#fff;}
+.clock{font-size:2.6rem;font-weight:800;letter-spacing:-.04em;font-variant-numeric:tabular-nums;line-height:1;}
+.clock.low{color:var(--warn);} .clock.zero{color:var(--bad);}
+.kv{display:grid;grid-template-columns:7rem 1fr;gap:.45rem .8rem;align-items:center;font-size:.9rem;}
+.kv > span{color:var(--t3);font-weight:600;font-size:.84rem;}
+
+.subgrid{display:grid;grid-template-columns:5.2rem repeat(4,minmax(0,1fr));gap:.4rem;}
+.subgrid .h{font-size:.78rem;font-weight:800;text-align:center;padding:.3rem 0;}
+.subgrid .g{font-weight:800;font-size:.9rem;display:flex;flex-direction:column;justify-content:center;}
+.subgrid .g small{font-weight:500;color:var(--t3);font-size:.76rem;}
+.cell{border:0;border-radius:11px;background:var(--fill);padding:.45rem .55rem;text-align:left;min-height:3.6rem;display:flex;flex-direction:column;gap:.1rem;font-size:.84rem;}
+.cell b{font-size:.88rem;} .cell span{font-size:.72rem;color:var(--t3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.cell.ok{background:#E9F6EE;} .cell.ok span{color:var(--ok);font-weight:700;}
+.cell.sel{box-shadow:inset 0 0 0 2px var(--brand);}
+.cell.none{color:var(--t4);}
+.badge{display:inline-flex;align-items:center;font-size:.7rem;font-weight:800;border-radius:6px;padding:.05rem .4rem;background:var(--fill);color:var(--t2);margin-right:.2rem;}
+.badge.ok{background:#E9F6EE;color:var(--ok);} .badge.warn{background:var(--warn-soft);color:var(--warn);} .badge.blue{background:var(--soft);color:var(--ink);} .badge.bad{background:#FDECEC;color:var(--bad);}
+
+.revgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.6rem;}
+@media (max-width:1000px){.revgrid{grid-template-columns:repeat(2,minmax(0,1fr));}}
+.rcol{border-radius:14px;box-shadow:inset 0 0 0 1px var(--line2);overflow:hidden;}
+.rcol h3{margin:0;padding:.5rem .7rem;font-size:.88rem;background:#F7F8FA!important;border-top:3px solid;border-bottom:1px solid #E5E8EC;min-height:3.6rem;}
+.rcol h3 small{display:block;font-weight:500;font-size:.72rem;color:var(--t2);}
+.rcol .in{padding:.5rem;display:grid;gap:.35rem;}
+.tg{border:0;border-radius:9px;background:var(--fill);padding:.4rem .55rem;text-align:left;font-size:.8rem;display:flex;justify-content:space-between;gap:.4rem;align-items:center;}
+.tg em{font-style:normal;font-weight:800;font-size:.68rem;padding:.05rem .4rem;border-radius:5px;background:#fff;color:var(--t3);flex:none;}
+.tg.on{background:var(--soft);color:var(--ink);font-weight:700;} .tg.on em{background:var(--brand);color:#fff;}
+
+.detail{border-top:1px solid var(--line);margin-top:1rem;padding-top:1rem;}
+.op h4{margin:.7rem 0 .2rem;font-size:.78rem;color:var(--t3);}
+.op p{margin:0;font-size:.92rem;line-height:1.6;white-space:pre-wrap;}
+.tags{display:flex;flex-wrap:wrap;gap:.35rem;margin:.3rem 0 .6rem;}
+.tags button{border:0;border-radius:999px;padding:.35rem .75rem;font-size:.8rem;font-weight:700;background:var(--fill);color:var(--t2);}
+.tags button[aria-pressed="true"]{background:var(--brand);color:#fff;}
+table.t{width:100%;border-collapse:collapse;font-size:.86rem;}
+table.t th,table.t td{padding:.45rem .55rem;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;}
+table.t th{font-size:.76rem;color:var(--t3);font-weight:700;}
+.qrs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.8rem;}
+@media (max-width:900px){.qrs{grid-template-columns:1fr;}}
+.qrc{border-radius:14px;box-shadow:inset 0 0 0 1px var(--line2);padding:.8rem;display:flex;flex-direction:column;gap:.45rem;}
+.qrc b{font-size:.95rem;} .qrc .qr{width:130px;height:130px;align-self:center;} .qrc .qr svg{width:100%;height:100%;}
+.qrc input{font-size:.78rem;}
+.stu{border-radius:14px;box-shadow:inset 0 0 0 1px var(--line2);margin-bottom:.5rem;overflow:hidden;}
+.stu > button{width:100%;border:0;background:#fff;display:flex;gap:.6rem;align-items:center;padding:.6rem .8rem;text-align:left;}
+.stu > button b{font-size:.95rem;} .stu > button .r{font-size:.8rem;font-weight:700;}
+.stu .body{padding:.2rem .9rem .9rem;border-top:1px solid var(--line);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:1rem;}
+@media (max-width:900px){.stu .body{grid-template-columns:1fr;}}
+.cnt{font-size:.74rem;color:var(--t3);display:flex;gap:.6rem;justify-content:space-between;margin:.25rem 0;}
+.cnt.over{color:var(--bad);font-weight:700;}
+
+/* ───────── 공지 화면 (TV) — 관공서 안내 화면처럼 납작하고 단정하게 ───────── */
+body.board{background:#E9EDF2;overflow:hidden;height:100vh;font-size:clamp(7px,min(1.2vw,2.13vh),30px);}
+body.board #board{display:flex;flex-direction:column;height:100vh;}
+.bhead{background:#fff;display:flex;align-items:center;gap:1em;padding:0 1.6em;height:4.2em;border-bottom:3px solid var(--brand);flex:none;}
+.bhead .nm{font-weight:800;font-size:1.35em;color:var(--deep);letter-spacing:-.03em;display:flex;align-items:center;gap:.45em;}
+.bhead .nm::before{content:"¶";display:inline-grid;place-items:center;width:1.45em;height:1.45em;border-radius:3px;background:var(--brand);color:#fff;font-size:.85em;}
+.bhead .sub{font-size:.95em;color:var(--t2);padding-left:1em;border-left:1px solid #CFD6DF;}
+.bhead .meta{margin-left:auto;font-size:.9em;color:var(--t3);text-align:right;line-height:1.35;}
+.bnav{display:flex;background:#F7F8FA;border-bottom:1px solid #D5DBE3;flex:none;padding:0 1.6em;}
+.bnav span{flex:1;text-align:center;padding:.55em .3em;font-size:.88em;font-weight:600;color:#8D97A5;border-right:1px solid #E1E5EB;white-space:nowrap;}
+.bnav span:first-child{border-left:1px solid #E1E5EB;}
+.bnav span.d{color:#4E5968;} .bnav span.d::before{content:"✓ ";color:var(--brand);}
+.bnav span.c{background:var(--brand);color:#fff;font-weight:800;}
+.bmain{flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,1fr) 21em;gap:1em;padding:1em 1.6em 1.2em;}
+.bstage{background:#fff;border:1px solid #D5DBE3;border-top:4px solid var(--deep);display:flex;flex-direction:column;min-height:0;overflow:hidden;}
+.bstage .lab{display:flex;justify-content:space-between;align-items:center;padding:.55em 1.6em;border-bottom:1px solid #E5E8EC;font-size:.9em;color:var(--t3);font-weight:600;flex:none;}
+.bstage .lab b{color:var(--brand);}
+.fitbox{flex:1;min-height:0;padding:1.1em 1.6em 1.2em;overflow:hidden;}
+.fit h1{font-size:2.5em;margin:0 0 .45em;letter-spacing:-.035em;line-height:1.2;color:var(--t1);}
+.fit .say{font-size:1.45em;font-weight:700;color:var(--ink);margin:0 0 .9em;padding-left:.7em;border-left:4px solid var(--brand);line-height:1.4;}
+.fit ol{margin:0;padding:0;list-style:none;counter-reset:n;}
+.fit ol li{counter-increment:n;display:grid;grid-template-columns:1.9em 1fr;gap:.7em;align-items:baseline;font-size:1.4em;line-height:1.45;padding:.5em 0;border-bottom:1px solid #EEF0F3;}
+.fit ol li:last-child{border-bottom:0;}
+.fit ol li::before{content:counter(n);display:grid;place-items:center;height:1.55em;background:#EEF3FA;color:var(--brand);font-weight:800;font-size:.8em;border:1px solid #C9D8EE;}
+.fit mark{background:none;color:var(--ink);font-weight:800;padding:0;}
+.fit .ph{font-size:1.9em;font-weight:800;margin:0 0 .5em;letter-spacing:-.03em;color:var(--t1);}
+.fit .ph small{font-weight:600;color:var(--t3);font-size:.55em;margin-left:.5em;letter-spacing:0;}
+table.ans{width:100%;border-collapse:collapse;table-layout:fixed;}
+table.ans th,table.ans td{border:1px solid #D5DBE3;padding:.5em .7em;vertical-align:top;text-align:left;line-height:1.42;}
+table.ans thead th{background:#F4F6F9;font-size:1.05em;border-top-width:4px;}
+table.ans thead th b{display:block;}
+table.ans thead th span{display:block;font-weight:500;font-size:.78em;color:var(--t2);margin-top:.15em;}
+table.ans tbody th{width:6.2em;background:#F7F8FA;font-size:.82em;color:var(--t2);font-weight:700;}
+table.ans td{font-size:.95em;}
+table.ans td.miss{color:#C4202F;}
+table.ans td.wait{color:#B7BEC8;text-align:center;vertical-align:middle;}
+.xs{display:grid;grid-template-columns:1fr 1fr;gap:.8em;margin-top:.8em;}
+.xs div{border:1px solid #C9D8EE;background:#F5F8FD;padding:.5em .8em;font-size:.95em;line-height:1.45;}
+.xs b{display:block;font-size:.82em;color:var(--ink);margin-bottom:.1em;}
+.bside{display:flex;flex-direction:column;gap:.8em;min-height:0;overflow:hidden;}
+.bbox{background:#fff;border:1px solid #D5DBE3;flex:none;}
+.bbox h3{margin:0;padding:.5em .9em;font-size:.88em;color:var(--t2);background:#F7F8FA;border-bottom:1px solid #E5E8EC;display:flex;justify-content:space-between;}
+.bbox h3 small{font-weight:600;color:var(--t3);}
+.bbox ol.how{margin:0;padding:.45em .9em .55em 2.1em;font-size:.86em;line-height:1.45;color:var(--t2);} .bbox ol.how li{padding:.2em 0;} .bbox ol.how mark{background:none;color:var(--ink);font-weight:800;}
+.btimer{padding:.6em .9em .75em;text-align:center;}
+.btimer b{display:block;font-size:4.4em;font-weight:800;letter-spacing:-.04em;line-height:1;font-variant-numeric:tabular-nums;color:var(--deep);}
+.btimer.low b{color:#C26A00;} .btimer.zero b{color:#C4202F;}
+.bar{height:.45em;background:#E5E9EF;margin-top:.6em;} .bar i{display:block;height:100%;background:var(--brand);transition:width .9s linear;}
+.btimer.low .bar i{background:#E08A00;} .btimer.zero .bar i{background:#C4202F;}
+.bnext{padding:.55em .9em;border-top:1px solid #E5E8EC;font-size:.86em;color:var(--t3);text-align:left;}
+.bnext b{color:var(--t1);}
+table.bsub{width:100%;border-collapse:collapse;font-size:.9em;}
+table.bsub th,table.bsub td{border-bottom:1px solid #EEF0F3;padding:.36em .3em;text-align:center;}
+table.bsub th{font-size:.78em;color:var(--t3);font-weight:600;}
+table.bsub td:first-child,table.bsub th:first-child{text-align:left;padding-left:.9em;font-weight:700;color:var(--t1);}
+table.bsub td i{font-style:normal;display:inline-block;width:1.4em;height:1.4em;line-height:1.4em;font-size:.8em;background:#EEF0F3;color:transparent;}
+table.bsub td i.ok{background:var(--brand);color:#fff;}
+table.bsub td.n{font-size:.8em;color:var(--t3);font-weight:600;}
+.border{list-style:none;margin:0;padding:0;}
+.border li{display:flex;gap:.6em;align-items:center;padding:.42em .9em;border-bottom:1px solid #EEF0F3;font-size:.92em;}
+.border li:last-child{border-bottom:0;}
+.border li b{width:2.6em;flex:none;} .border li span{color:var(--t2);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.border li em{font-style:normal;font-size:.75em;font-weight:700;color:var(--t3);}
+.border li.c{background:#EEF3FA;} .border li.c b,.border li.c em{color:var(--brand);}
+.border li.d span,.border li.d b{color:#A4ADB9;}
+.bqr{position:fixed;inset:0;z-index:50;background:rgba(18,32,58,.88);display:grid;place-items:center;}
+.bqr .box{background:#fff;border-top:6px solid var(--brand);padding:2.2em 2.8em;display:flex;gap:2.6em;align-items:center;max-width:90vw;}
+.bqr .qr{width:min(44vh,26em);height:min(44vh,26em);} .bqr .qr svg{width:100%;height:100%;}
+.bqr small{font-size:1em;color:var(--brand);font-weight:700;}
+.bqr h2{margin:.15em 0 .4em;font-size:2.4em;letter-spacing:-.03em;color:var(--t1);}
+.bqr ol{margin:0 0 1em;padding-left:1.2em;font-size:1.2em;color:var(--t2);line-height:1.6;}
+.bqr .url{font-size:.9em;color:var(--t3);word-break:break-all;border-top:1px solid #E5E8EC;padding-top:.7em;}
+/* ───────── 콘솔: 둥근 카드 대신 업무용 화면처럼 ───────── */
+body:not(.board){background:#EEF1F5;}
+.card{border-radius:6px;box-shadow:none;border:1px solid #D9DEE5;}
+.card h2{padding-bottom:.55rem;border-bottom:1px solid #EEF0F3;margin-bottom:.8rem;}
+.btn{border-radius:5px;} .btn.sm{border-radius:4px;} .btn.lg{border-radius:6px;}
+.seg,.seg button{border-radius:4px;}
+.steps{gap:0;border:1px solid #D9DEE5;border-radius:4px;overflow:hidden;}
+.steps{flex-wrap:nowrap;} .steps button{border-radius:0;background:#fff;border-right:1px solid #E5E8EC;padding:.45rem .3rem;flex:1 1 0;font-size:.76rem;white-space:nowrap;}
+.steps button:last-child{border-right:0;} .steps button.done{background:#F5F8FC;}
+.cell,.tg,.rcol,.qrc,.stu,input.txt,textarea.txt,select.txt{border-radius:4px;}
+.cell{background:#F7F8FA;border:1px solid #E5E8EC;} .cell.ok{background:#F1F8F4;border-color:#CDE6D6;}
+.badge{border-radius:3px;}
+.tags button{border-radius:4px;}
+.dot{border-radius:3px;}
+.logo::before{border-radius:3px;}
+.tbtn{border-radius:4px;}
+@media print{.ctop,.tabs,.warnbar,.noprint{display:none!important;} body{background:#fff;} .card{box-shadow:none;}}
+</style>
+</head>
+<body>
+<div id="console">
+  <header class="ctop"><div class="ctop-in"><span class="logo">생활법률 합동상담 콘솔</span><span class="dot" id="link">연결 중</span><span class="grow"></span>
+    <span class="note" style="color:rgba(255,255,255,.8)" id="roomTxt"></span><button class="tbtn" id="btnBoard">공지 화면 열기</button></div></header>
+  <div class="warnbar" id="solBar" hidden><div class="in">해설 없음 — 해설.json을 불러와야 해설 공개를 할 수 있습니다. <label class="btn sm primary">해설 불러오기<input type="file" accept=".json,application/json" class="solFile" hidden></label></div></div>
+  <nav class="tabs"><div class="tabs-in" id="tabs"></div></nav>
+  <main class="c" id="view"></main>
+</div>
+
+<div id="board" hidden>
+  <div class="bhead"><span class="nm">생활법률 합동상담</span><span class="sub">법률 · 세무 합동 상담소</span><span class="meta" id="bMeta"></span></div>
+  <div class="bnav" id="bNav"></div>
+  <div class="bmain">
+    <div class="bstage"><div class="lab"><span id="bLab"></span><span id="bLab2"></span></div><div class="fitbox" id="bFitBox"><div class="fit" id="bStage"></div></div></div>
+    <div class="bside">
+      <div class="bbox"><h3>남은 시간 <small id="bTot"></small></h3><div class="btimer" id="bTimer"><b id="bTime">—</b><div class="bar"><i id="bBar" style="width:100%"></i></div></div><div class="bnext" id="bNext"></div></div>
+      <div class="bbox" id="bSideBox"></div>
+      <div class="bbox" id="bSideBox2"></div>
+    </div>
+  </div>
+  <div class="bqr" id="bQr" hidden><div class="box"><div class="qr" id="bQrCode"></div><div><small id="bQrS"></small><h2 id="bQrT"></h2><ol id="bQrP"></ol><div class="url" id="bQrU"></div></div></div></div>
+</div>
+<script src="config.js"></script>
+<script src="db.js"></script>
+<script src="cases.js"></script>
+<script src="roster.js"></script>
+<script src="steps.js"></script>
+<script src="record.js"></script>
+<script src="qrcode.js"></script>
+<script>
+(function () {
+  'use strict';
+  const el = (id) => document.getElementById(id);
+  const esc = (s) => String(s == null ? '' : s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const CFG = window.LAW_CONFIG || {}, R = LAWROSTER, ROLES = R.ROLES, RK = R.ROLEKEY, STEPS = LAWSTEPS.list;
+  const RC = ['var(--r0)', 'var(--r1)', 'var(--r2)', 'var(--r3)'];
+  const ROOM = LAWDB.roomId, BOARD = location.hash === '#board';
+  const LIM = CFG.record || { autoMax: 500, careerMax: 700 };
+  const PROGRAM = (CFG.program || {}).name || '생활법률 합동상담';
+  let SIGN = {}, ST = null, PUB = null, OPS = {}, REPS = {}, THX = {}, REF = {}, link = 'connecting';
+  const url = (f) => new URL(f, location.href).href.split('#')[0];
+  const clock = (t) => t ? new Date(t).toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit', hour12: false }) : '';
+  const fmt = (s) => Math.floor(s / 60) + ':' + String(Math.max(0, s) % 60).padStart(2, '0');
+  function qrSvg(text) { if (!window.qrcode) return ''; const q = qrcode(0, 'M'); q.addData(unescape(encodeURIComponent(text))); q.make(); return q.createSvgTag({ cellSize: 4, margin: 0, scalable: true }); }
+  function qrPng(text, title, file) {
+    const q = qrcode(0, 'M'); q.addData(unescape(encodeURIComponent(text))); q.make();
+    const n = q.getModuleCount(), cell = 16, pad = 48, size = n * cell + pad * 2, cv = document.createElement('canvas'); cv.width = size; cv.height = size + 70;
+    const x = cv.getContext('2d'); x.fillStyle = '#fff'; x.fillRect(0, 0, cv.width, cv.height); x.fillStyle = '#191F28';
+    for (let r = 0; r < n; r++) for (let c = 0; c < n; c++) if (q.isDark(r, c)) x.fillRect(pad + c * cell, pad + r * cell, cell, cell);
+    x.font = '700 26px sans-serif'; x.textAlign = 'center'; x.fillText(title, size / 2, size + 30);
+    const a = document.createElement('a'); a.download = file; a.href = cv.toDataURL('image/png'); a.click();
+  }
+
+  /* ── 교사 브라우저에만 두는 것: 해설, 관찰, 초안 ── */
+  const LK = 'lawcounsel.teacher.' + ROOM, SK = 'lawcounsel.sol.' + ROOM;
+  let T = { obs: {}, follow: {}, drafts: {}, when: '' }, SOL = null;
+  try { T = Object.assign(T, JSON.parse(localStorage.getItem(LK) || '{}')); } catch (e) {}
+  try { SOL = JSON.parse(localStorage.getItem(SK) || 'null'); } catch (e) {}
+  const saveT = () => { try { localStorage.setItem(LK, JSON.stringify(T)); } catch (e) {} };
+  window.addEventListener('storage', (e) => { if (e.key === SK) { try { SOL = JSON.parse(e.newValue || 'null'); } catch (x) {} render(); } });
+
+  /* ── 진행 상태 ── */
+  const st = () => Object.assign({ step: 0, qr: 'student', reopen: false, timer: null }, ST || {});
+  function setST(patch) { const s = Object.assign(st(), patch); ST = s; LAWDB.setState(s); render(); }
+  function leftOf(t) { if (!t) return 0; return Math.max(0, Math.round(t.run ? (t.end - Date.now()) / 1000 : (t.left || 0))); }
+  function goStep(i) {
+    i = Math.max(0, Math.min(STEPS.length - 1, i));
+    const sec = STEPS[i].min * 60, cur = st();
+    let qr = cur.qr; if (i === 1 && qr === 'student') qr = 'off'; if (STEPS[i].key === 'end') qr = 'reflect';
+    setST({ step: i, qr: qr, timer: sec ? { run: false, left: sec, total: sec } : null });
+  }
+  function timer(cmd, arg) {
+    const t = st().timer || { run: false, left: STEPS[st().step].min * 60, total: STEPS[st().step].min * 60 };
+    const left = leftOf(t);
+    if (cmd === 'toggle') setST({ timer: t.run ? { run: false, left: left, total: t.total } : { run: true, end: Date.now() + left * 1000, total: t.total } });
+    if (cmd === 'reset') { const s = STEPS[st().step].min * 60; setST({ timer: { run: false, left: s, total: s } }); }
+    if (cmd === 'plus') setST({ timer: t.run ? { run: true, end: t.end + 60000, total: t.total + 60 } : { run: false, left: left + 60, total: t.total + 60 } });
+    if (cmd === 'set') setST({ timer: { run: false, left: arg * 60, total: arg * 60 } });
+  }
+
+  /* ════════════════════ 공지 화면 ════════════════════ */
+  const SHORT = (x) => ({ wait: '준비', intake: '의뢰 접수', solo: '개인 검토', meet: '합동 회의', end: '마무리' }[x.key] || x.name);
+  let lastBeep = 0;
+  function beep() { try { const ac = new (window.AudioContext || window.webkitAudioContext)(); [0, .35, .7].forEach((d) => { const o = ac.createOscillator(), g = ac.createGain(); o.frequency.value = 880; o.connect(g); g.connect(ac.destination); g.gain.setValueAtTime(.25, ac.currentTime + d); g.gain.exponentialRampToValueAtTime(.001, ac.currentTime + d + .28); o.start(ac.currentTime + d); o.stop(ac.currentTime + d + .3); }); } catch (e) {} }
+  function boardTick() {
+    const s = st(), t = s.timer, left = leftOf(t), total = (t && t.total) || 1;
+    el('bTime').textContent = t ? fmt(left) : '—';
+    el('bTimer').className = 'btimer ' + (!t ? '' : left <= 0 ? 'zero' : left <= 60 ? 'low' : '');
+    el('bBar').style.width = (t ? Math.min(100, left / total * 100) : 100).toFixed(1) + '%';
+    el('bTot').textContent = t ? (t.run ? '진행 중' : '멈춤') + ' · ' + Math.round(total / 60) + '분' : '';
+    if (t && t.run && left <= 0 && Date.now() - lastBeep > 5000 && t.end > Date.now() - 2500) { lastBeep = Date.now(); beep(); }
+  }
+  /* 무대 글자 크기를 칸에 꼭 맞게 — 넘치지도, 크게 비지도 않도록 */
+  function fitStage() {
+    const box = el('bFitBox'), f = el('bStage'); if (!box || box.clientHeight < 10) return;
+    const base = parseFloat(getComputedStyle(document.body).fontSize);
+    let lo = base * .55, hi = base * 1.6;
+    for (let i = 0; i < 14; i++) { const m = (lo + hi) / 2; f.style.fontSize = m + 'px'; if (f.scrollHeight <= box.clientHeight - 24 && f.scrollWidth <= box.clientWidth) lo = m; else hi = m; }
+    f.style.fontSize = lo + 'px';
+  }
+  window.addEventListener('resize', () => { if (BOARD) fitStage(); });
+  function ansBoard(cid) {
+    const P = PUB || {}, rows = [['issue', '쟁점'], ['law', '근거 조문'], ['advice', '의뢰인 조언'], ['miss', '흔한 오답']];
+    let h = '<table class="ans"><thead><tr><th style="width:6.2em;background:#fff;border-top-width:1px"></th>' + ROLES.map((rn, i) => '<th style="border-top-color:' + RC[i] + '"><b style="color:' + RC[i] + '">' + esc(rn) + '</b></th>').join('') + '</tr></thead><tbody>';
+    rows.forEach(([f, l]) => {
+      h += '<tr><th>' + l + '</th>' + RK.map((k) => { const v = P[cid + '-' + k + '-' + f];
+        if (!v) return '<td class="wait">—</td>';
+        return '<td class="' + (f === 'miss' ? 'miss' : '') + '"' + (f === 'issue' ? ' style="font-weight:700"' : '') + '>' + (Array.isArray(v.text) ? v.text.map(esc).join('<br>') : esc(v.text)) + '</td>'; }).join('') + '</tr>';
+    });
+    h += '</tbody></table>';
+    const xs = [0, 1].map((i) => P[cid + '-x' + i]).filter(Boolean);
+    return h + (xs.length ? '<div class="xs">' + xs.map((x) => '<div><b>얽힌 쟁점 · ' + esc(x.head) + '</b>' + esc(x.text) + '</div>').join('') + '</div>' : '');
+  }
+  function renderBoard() {
+    const s = st(), cur = STEPS[s.step], gs = R.groups(SIGN), P = CFG.program || {};
+    el('bMeta').innerHTML = esc(P.when || '') + '<br>' + esc(P.place || '');
+    el('bNav').innerHTML = STEPS.map((x, i) => '<span class="' + (i < s.step ? 'd' : i === s.step ? 'c' : '') + '">' + (i ? i + '. ' : '') + esc(SHORT(x)) + '</span>').join('');
+    el('bLab').innerHTML = s.step ? '<b>' + s.step + '단계</b> / 전체 ' + (STEPS.length - 1) + '단계' : '활동 시작 전';
+    el('bLab2').textContent = cur.min ? '이 단계 ' + cur.min + '분' : '';
+    const nx = STEPS[s.step + 1];
+    el('bNext').innerHTML = nx ? '다음 · <b>' + esc(SHORT(nx)) + '</b>' + (nx.min ? ' ' + nx.min + '분' : '') : '오늘 활동의 마지막 단계입니다';
+    const caseOfG = (gi) => { const g = gs.find((x) => x.g === gi); return R.caseOf(g ? g.caseId : (CFG.caseOfGroup || [1, 2, 3, 4])[gi - 1]); };
+    let h;
+    if (cur.key === 'pres') {
+      const c = caseOfG(cur.group);
+      h = '<div class="ph">' + esc(cur.name) + (c ? ' · ' + esc(c.title) : '') + '<small>발표가 끝나면 해설이 공개됩니다</small></div>' + (c ? ansBoard(c.id) : '');
+    } else {
+      h = '<h1>' + esc(cur.name) + '</h1>' + (cur.say ? '<p class="say">' + esc(cur.say) + '</p>' : '') + '<ol>' + cur.list.map((x) => '<li><span>' + x + '</span></li>').join('') + '</ol>';
+    }
+    el('bStage').innerHTML = h;
+    /* 오른쪽 아래 두 칸: 발표 때는 발표 순서·발표 방법, 그 밖에는 제출 현황·조별 의뢰인 */
+    const order = (allDone) => '<h3>발표 순서</h3><ul class="border">' + R.GROUPS.map((gl, gi) => { const c = caseOfG(gi + 1), cls = !allDone && cur.group === gi + 1 ? 'c' : (allDone || gi + 1 < cur.group) ? 'd' : '';
+        return '<li class="' + cls + '"><b>' + esc(gl) + '</b><span>' + esc(c ? c.client + ' · ' + c.tag : '') + '</span><em>' + (cls === 'c' ? '발표 중' : cls === 'd' ? '끝' : '') + '</em></li>'; }).join('') + '</ul>';
+    let n = 0, tot = 0;
+    const rows = R.GROUPS.map((gl, gi) => { const o = OPS['g' + (gi + 1)] || {}, g = gs[gi]; tot += g ? g.members.length : 0;
+      return '<tr><td>' + esc(gl) + '</td>' + [0, 1, 2, 3].map((r) => { if (o['r' + r]) n++; return '<td><i class="' + (o['r' + r] ? 'ok' : '') + '">✓</i></td>'; }).join('') + '<td class="n">' + (REPS['g' + (gi + 1)] ? '보고서 ✓' : '') + '</td></tr>'; }).join('');
+    const subs = '<h3>의견서 제출 <small>' + n + ' / ' + (tot || 16) + '</small></h3><table class="bsub"><tr><th></th><th>민사</th><th>형사</th><th>세무</th><th>노무</th><th></th></tr>' + rows + '</table>';
+    const clients = '<h3>조별 의뢰인</h3><ul class="border">' + R.GROUPS.map((gl, gi) => { const c = caseOfG(gi + 1); return '<li><b>' + esc(gl) + '</b><span>' + esc(c ? c.client + ' · ' + c.tag : '') + '</span></li>'; }).join('') + '</ul>';
+    if (cur.key === 'pres') { el('bSideBox').innerHTML = order(false); el('bSideBox2').innerHTML = '<h3>발표 방법 <small>2분</small></h3><ol class="how">' + cur.list.map((x) => '<li>' + x + '</li>').join('') + '</ol>'; }
+    else if (cur.key === 'end') { el('bSideBox').innerHTML = subs; el('bSideBox2').innerHTML = order(true); }
+    else { el('bSideBox').innerHTML = subs; el('bSideBox2').innerHTML = clients; }
+    const q = s.qr || 'off';
+    el('bQr').hidden = q === 'off';
+    if (q !== 'off') {
+      const u = url(q === 'reflect' ? 'reflect.html' : 'student.html');
+      el('bQrCode').innerHTML = qrSvg(u);
+      el('bQrS').textContent = q === 'reflect' ? '활동 뒤 과제' : '휴대폰으로 들어오기';
+      el('bQrT').textContent = q === 'reflect' ? '성찰 과제' : '전문가 의견서 작성기';
+      el('bQrP').innerHTML = (q === 'reflect' ? ['휴대폰 카메라로 QR을 찍습니다.', '내 조와 이름을 고르고 학번을 적습니다.', '다섯 문항에 답하고 다음 시간까지 제출합니다.'] : ['휴대폰 카메라로 QR을 찍습니다.', '내 조와 이름을 고릅니다.', '학번 다섯 자리로 확인합니다.']).map((x) => '<li>' + x + '</li>').join('');
+      el('bQrU').textContent = u;
+    }
+    boardTick();
+    fitStage();
+  }
+  /* ════════════════════ 콘솔 ════════════════════ */
+  const TABS = [['run', '진행'], ['sub', '제출 · 관찰'], ['sign', '참가 신청'], ['rec', '학생 기록'], ['set', '설정']];
+  let tab = 'run', revG = 1, selCell = null, openStu = {}, recCls = 'all';
+  el('tabs').innerHTML = TABS.map(([k, n]) => '<button data-t="' + k + '" aria-selected="' + (k === tab) + '">' + n + '</button>').join('');
+  el('tabs').querySelectorAll('button').forEach((b) => b.onclick = function () { tab = this.dataset.t; el('tabs').querySelectorAll('button').forEach((x) => x.setAttribute('aria-selected', x === this)); render(true); });
+  el('btnBoard').onclick = () => window.open(location.pathname + '#board', 'lawboard');
+  el('roomTxt').textContent = '방 ' + ROOM;
+  document.querySelectorAll('.solFile').forEach((f) => f.onchange = loadSol);
+  function loadSol(e) {
+    const f = e.target.files && e.target.files[0]; if (!f) return;
+    const rd = new FileReader();
+    rd.onload = () => { try { const o = JSON.parse(rd.result); if (!o.cases) throw 0; SOL = o; localStorage.setItem(SK, JSON.stringify(o)); render(true); }
+      catch (x) { alert('해설 파일이 아닙니다. 함께 드린 해설.json을 고르세요.'); } };
+    rd.readAsText(f, 'utf-8');
+  }
+  const typing = () => { const a = document.activeElement; return a && /INPUT|TEXTAREA|SELECT/.test(a.tagName) && el('view').contains(a); };
+
+  function render(force) {
+    if (BOARD) { renderBoard(); return; }
+    el('solBar').hidden = !!SOL;
+    el('link').className = 'dot ' + link;
+    el('link').textContent = { online: '실시간 연결됨', offline: '연결 끊김', error: '연결 실패', local: '연습 모드', connecting: '연결 중' }[link] || link;
+    if (!force && typing()) return;
+    ({ run: tabRun, sub: tabSub, sign: tabSign, rec: tabRec, set: tabSet })[tab]();
+  }
+
+  /* ── 진행 ── */
+  function tabRun() {
+    const s = st(), cur = STEPS[s.step], t = s.timer, left = leftOf(t);
+    if (cur.key === 'pres') revG = cur.group;
+    const gs = R.groups(SIGN);
+    let h = '<div class="grid2"><section class="card"><div class="stepnow"><div><small>지금 단계</small><b>' + esc(cur.name) + '</b></div>' +
+      '<div class="row"><button class="btn ghost" id="bPrev">이전</button><button class="btn primary lg" id="bNext">다음 단계 →</button></div></div>' +
+      '<div class="steps">' + STEPS.map((x, i) => '<button data-i="' + i + '" class="' + (i < s.step ? 'done' : i === s.step ? 'now' : '') + '">' + (i ? i + '. ' : '') + esc(SHORT(x)) + '</button>').join('') + '</div>' +
+      '<div class="kv"><span>타이머</span><div class="row"><span class="clock num ' + (!t ? '' : left <= 0 ? 'zero' : left <= 60 ? 'low' : '') + '" id="cClock">' + (t ? fmt(left) : '—') + '</span>' +
+        '<button class="btn primary" id="tGo">' + (t && t.run ? '멈춤' : '시작') + '</button><button class="btn" id="tRe">다시</button><button class="btn" id="tPl">+1분</button>' +
+        [1, 2, 3, 12, 25].map((m) => '<button class="btn ghost sm tSet" data-m="' + m + '">' + m + '분</button>').join('') + '</div>' +
+      '<span>공지 QR</span><div class="seg" id="qrSeg">' + [['off', '끔'], ['student', '의견서 작성기'], ['reflect', '성찰 과제']].map(([k, n]) => '<button data-q="' + k + '" aria-pressed="' + (s.qr === k) + '">' + n + '</button>').join('') + '</div>' +
+      '<span>제출</span><div class="row"><div class="seg" id="reSeg"><button data-r="0" aria-pressed="' + !s.reopen + '">단계에 따라</button><button data-r="1" aria-pressed="' + !!s.reopen + '">모두 다시 열기</button></div><span class="note">의견서는 1~3단계, 보고서는 2~7단계에 열립니다</span></div>' +
+      '</div><p class="note" style="margin:.8rem 0 0">공지 화면은 위쪽 [공지 화면 열기]로 새 창을 열어 TV로 보내세요. 학생 휴대폰의 타이머·단계도 함께 바뀝니다. 단축키: 스페이스 = 타이머, → / ← = 단계</p></section>';
+    h += '<section class="card"><h2>의견서 제출 현황 <small>' + countOps() + ' / ' + gs.length * 4 + '</small></h2>' + subGrid(gs, true) + '</section></div>';
+    /* 해설 공개 */
+    h += '<section class="card"><h2>해설 공개 <small>발표가 끝난 조부터 칸을 눌러 공개하세요. 공지 화면과 학생 휴대폰에 곧바로 뜹니다.</small></h2>';
+    if (!SOL) h += '<p class="note warn">해설.json을 먼저 불러오세요 (위 주황 줄 또는 [설정] 탭).</p>';
+    else {
+      h += '<div class="row" style="margin-bottom:.7rem"><div class="seg" id="gSeg">' + R.GROUPS.map((gl, i) => { const cid = (CFG.caseOfGroup || [1, 2, 3, 4])[i]; const c = R.caseOf(cid);
+        return '<button data-g="' + (i + 1) + '" aria-pressed="' + (revG === i + 1) + '">' + esc(gl) + ' · ' + esc(c ? c.client : '') + '</button>'; }).join('') + '</div>' +
+        '<span class="grow"></span><button class="btn sm" id="revAll">이 조 모두 공개</button><button class="btn sm ghost" id="revNone">이 조 모두 가리기</button></div>';
+      const cid = (CFG.caseOfGroup || [1, 2, 3, 4])[revG - 1], sol = SOL.cases[String(cid)];
+      h += '<div class="revgrid">' + RK.map((k, i) => { const a = sol.ans[k];
+        return '<div class="rcol"><h3 style="border-top-color:' + RC[i] + ';color:' + RC[i] + '">' + esc(ROLES[i]) + '<small>' + esc(a.issue) + '</small></h3><div class="in">' +
+          [['issue', '쟁점 제목'], ['law', '근거 조문'], ['point', '핵심 판단'], ['advice', '의뢰인 조언'], ['miss', '흔한 오답']].map(([f, l]) => {
+            const key = cid + '-' + k + '-' + f, on = !!(PUB || {})[key];
+            return '<button class="tg' + (on ? ' on' : '') + '" data-k="' + key + '"><span>' + l + '</span><em>' + (on ? '공개' : '가림') + '</em></button>'; }).join('') + '</div></div>'; }).join('') + '</div>';
+      h += '<div class="row" style="margin-top:.6rem">' + sol.cross.map((x, i) => { const key = cid + '-x' + i, on = !!(PUB || {})[key];
+        return '<button class="tg' + (on ? ' on' : '') + '" data-k="' + key + '" style="flex:1"><span>얽힌 쟁점 · ' + esc(x.who) + ' · ' + esc(x.name) + '</span><em>' + (on ? '공개' : '가림') + '</em></button>'; }).join('') + '</div>';
+    }
+    h += '</section>';
+    el('view').innerHTML = h;
+    el('bPrev').onclick = () => goStep(st().step - 1); el('bNext').onclick = () => goStep(st().step + 1);
+    el('view').querySelectorAll('.steps button').forEach((b) => b.onclick = () => goStep(+b.dataset.i));
+    el('tGo').onclick = () => timer('toggle'); el('tRe').onclick = () => timer('reset'); el('tPl').onclick = () => timer('plus');
+    el('view').querySelectorAll('.tSet').forEach((b) => b.onclick = () => timer('set', +b.dataset.m));
+    el('qrSeg').querySelectorAll('button').forEach((b) => b.onclick = () => setST({ qr: b.dataset.q }));
+    el('reSeg').querySelectorAll('button').forEach((b) => b.onclick = () => setST({ reopen: b.dataset.r === '1' }));
+    bindSubGrid();
+    if (SOL) {
+      el('gSeg').querySelectorAll('button').forEach((b) => b.onclick = () => { revG = +b.dataset.g; render(true); });
+      el('view').querySelectorAll('.tg[data-k]').forEach((b) => b.onclick = () => reveal([b.dataset.k], !(PUB || {})[b.dataset.k]));
+      const cid = (CFG.caseOfGroup || [1, 2, 3, 4])[revG - 1], keys = RK.flatMap((k) => ['issue', 'law', 'point', 'advice', 'miss'].map((f) => cid + '-' + k + '-' + f)).concat([cid + '-x0', cid + '-x1']);
+      el('revAll').onclick = () => reveal(keys, true); el('revNone').onclick = () => reveal(keys, false);
+    }
+  }
+  function solItem(key) {
+    const m = key.split('-'), cid = m[0], sol = SOL && SOL.cases[cid]; if (!sol) return null;
+    if (m[1][0] === 'x') { const x = sol.cross[+m[1].slice(1)]; return x ? { head: x.who + ' · ' + x.name, text: x.text } : null; }
+    const a = sol.ans[m[1]]; if (!a) return null;
+    return { text: m[2] === 'issue' ? a.issue : a[m[2]] };
+  }
+  function reveal(keys, on) {
+    const p = Object.assign({}, PUB || {});
+    keys.forEach((k) => { if (on) { const v = solItem(k); if (v) p[k] = v; } else delete p[k]; });
+    PUB = p; LAWDB.setPub(p); render(true);
+  }
+  const countOps = () => Object.keys(OPS).reduce((n, g) => n + Object.keys(OPS[g] || {}).length, 0);
+  function subGrid(gs, compact) {
+    let h = '<div class="subgrid"><span></span>' + ROLES.map((rn, i) => '<span class="h" style="color:' + RC[i] + '">' + esc(rn) + '</span>').join('');
+    R.GROUPS.forEach((gl, gi) => {
+      const g = gs[gi], c = R.caseOf((CFG.caseOfGroup || [1, 2, 3, 4])[gi]), o = OPS['g' + (gi + 1)] || {}, th = THX['g' + (gi + 1)] || {};
+      h += '<div class="g">' + esc(gl) + '<small>' + esc(c ? c.client : '') + (REPS['g' + (gi + 1)] ? ' · 보고서 ✓' : '') + '</small></div>';
+      [0, 1, 2, 3].forEach((r) => {
+        const m = g ? g.members.find((x) => x.r === r) : null, op = o['r' + r];
+        if (!m) { h += '<div class="cell none"><span>—</span></div>'; return; }
+        const nobs = ((T.obs[m.sid] || {}).tags || []).length + ((T.obs[m.sid] || {}).memo ? 1 : 0);
+        h += '<button class="cell' + (op ? ' ok' : '') + (selCell && selCell.sid === m.sid ? ' sel' : '') + '" data-sid="' + esc(m.sid) + '"><b>' + esc(m.name) + '</b><span>' +
+          (op ? '제출 ' + clock(op.at) : '의견서 아직') + '</span><span>' + (th['r' + r] ? '회의 ✓' : '&nbsp;') + (nobs && !compact ? ' · 관찰 ' + nobs : '') + '</span></button>';
+      });
+    });
+    return h + '</div>';
+  }
+  function bindSubGrid() {
+    el('view').querySelectorAll('.cell[data-sid]').forEach((b) => b.onclick = () => { selCell = { sid: b.dataset.sid }; tab = 'sub'; el('tabs').querySelectorAll('button').forEach((x) => x.setAttribute('aria-selected', x.dataset.t === 'sub')); render(true); });
+  }
+
+  /* ── 제출 · 관찰 ── */
+  function obsEditor(sid) {
+    const o = T.obs[sid] || { tags: [], memo: '' };
+    return '<div class="tags" data-sid="' + esc(sid) + '">' + LAWREC.TAGS.map((t) => '<button data-t="' + esc(t) + '" aria-pressed="' + ((o.tags || []).indexOf(t) >= 0) + '">' + esc(t) + '</button>').join('') + '</div>' +
+      '<input class="txt obsMemo" data-sid="' + esc(sid) + '" maxlength="120" placeholder="한 줄 메모 (예: 세무사와 노무사의 결론 차이를 먼저 짚어 회의 방향을 정함)" value="' + esc(o.memo || '') + '">';
+  }
+  function bindObs(root) {
+    root.querySelectorAll('.tags[data-sid] button').forEach((b) => b.onclick = function () {
+      const sid = this.parentNode.dataset.sid, o = T.obs[sid] = T.obs[sid] || { tags: [], memo: '' }, t = this.dataset.t, i = o.tags.indexOf(t);
+      if (i >= 0) o.tags.splice(i, 1); else o.tags.push(t); this.setAttribute('aria-pressed', i < 0); saveT(); });
+    root.querySelectorAll('.obsMemo').forEach((x) => x.oninput = function () { const o = T.obs[this.dataset.sid] = T.obs[this.dataset.sid] || { tags: [], memo: '' }; o.memo = this.value; saveT(); });
+  }
+  function opHtml(op) {
+    if (!op) return '<p class="note">아직 의견서를 내지 않았습니다.</p>';
+    const L = (op.laws || []).filter((x) => x && (x.name || x.mine));
+    return '<div class="op"><h4>판단에 쓴 증거</h4><p>' + esc((op.ev || []).join(', ') || '—') + (op.evNote ? ' · ' + esc(op.evNote) : '') + '</p>' +
+      '<h4>근거 조문</h4>' + (L.map((x) => '<p><b>' + esc(x.name) + ' ' + esc(x.art) + '</b> — ' + esc(x.mine) + '</p>').join('') || '<p>—</p>') +
+      '<h4>나의 판단</h4><p>' + esc(op.judge) + '</p><h4>의뢰인에게 할 조언</h4><p>' + esc(op.advice) + '</p>' + (op.more ? '<h4>더 찾아보기</h4><p>' + esc(op.more) + '</p>' : '') + '</div>';
+  }
+  function tabSub() {
+    const gs = R.groups(SIGN);
+    let h = '<section class="card"><h2>제출 · 관찰 <small>학생 칸을 누르면 의견서를 읽고 관찰을 남길 수 있습니다. 관찰이 특기사항 초안의 가장 중요한 근거입니다.</small></h2>' + subGrid(gs, false);
+    const f = selCell && R.find(SIGN, selCell.sid);
+    if (f) {
+      const m = f.member, g = f.group, op = (OPS['g' + g.g] || {})['r' + m.r], th = (THX['g' + g.g] || {})['r' + m.r];
+      const got = Object.values(THX['g' + g.g] || {}).find((x) => x && String(x.toSid) === String(m.sid));
+      h += '<div class="detail grid2"><div><h2 style="margin:0 0 .3rem"><span style="color:' + RC[m.r] + '">' + esc(m.role) + '</span> ' + esc(m.name) + ' <small class="num">' + esc(m.sid) + ' · ' + esc(g.label) + '</small></h2>' + opHtml(op) + '</div><div>' +
+        '<h2 style="font-size:.95rem">교사 관찰</h2>' + obsEditor(m.sid) +
+        '<div class="op"><h4>회의에서 한 일 (본인)</h4><p>' + esc(th ? th.did : '—') + '</p><h4>받은 고마운 점' + (got ? ' · ' + esc(got.from) : '') + '</h4><p>' + esc(got ? got.text : '—') + '</p></div></div></div>';
+      const rep = REPS['g' + g.g];
+      h += '<div class="detail"><h2 style="font-size:.95rem">' + esc(g.label) + ' 합동 상담 보고서 ' + (rep ? '<small>' + esc(rep.by || '') + ' · ' + clock(rep.at) + '</small>' : '<small>아직</small>') + '</h2>' +
+        (rep ? '<table class="t"><tr><th>얽힌 쟁점</th><th>관련 전문가</th><th>결론과 근거</th></tr>' + (rep.cross || []).filter((x) => x && x.issue).map((x) => '<tr><td>' + esc(x.issue) + '</td><td>' + (x.roles || []).map((r) => esc(ROLES[r])).join(', ') + '</td><td>' + esc(x.concl) + '</td></tr>').join('') + '</table>' +
+          '<table class="t" style="margin-top:.6rem"><tr><th>순서</th><th>할 일</th><th>이유</th><th>담당</th></tr>' + (rep.todo || []).map((x, i) => x && x.what ? '<tr><td>' + (i + 1) + '</td><td>' + esc(x.what) + '</td><td>' + esc(x.why) + '</td><td>' + esc(x.role) + '</td></tr>' : '').join('') + '</table>' +
+          '<p class="note">발표자: ' + esc(rep.presenter || '—') + '</p>' : '') + '</div>';
+    } else h += '<p class="note" style="margin-top:.8rem">위 표에서 학생을 고르세요.</p>';
+    el('view').innerHTML = h + '</section>';
+    bindSubGrid(); bindObs(el('view'));
+  }
+
+  /* ── 참가 신청 ── */
+  function tabSign() {
+    const rows = R.ordered(SIGN), CAP = R.GROUPS.length, inCap = rows.slice(0, CAP), wait = rows.slice(CAP);
+    const links = [['signup.html', '참가 신청', '포스터·단톡방용'], ['student.html', '의견서 작성기', '활동 당일 공지 화면에도 뜸'], ['reflect.html', '성찰 과제', '활동 뒤 공지 화면에도 뜸']];
+    let h = '<section class="card"><h2>학생 주소 · QR</h2><div class="qrs">' + links.map(([f, n, d], i) => '<div class="qrc"><b>' + n + '</b><span class="note">' + d + '</span><div class="qr">' + qrSvg(url(f)) + '</div>' +
+      '<input class="txt" readonly value="' + esc(url(f)) + '"><div class="row"><button class="btn sm cp" data-u="' + esc(url(f)) + '">주소 복사</button><button class="btn sm png" data-u="' + esc(url(f)) + '" data-n="' + n + '">QR 그림 저장</button></div></div>').join('') + '</div></section>';
+    h += '<section class="card"><h2>신청 현황 <small>정원 ' + CAP + '개 조 중 ' + inCap.length + '개 조' + (wait.length ? ' · 대기 ' + wait.length : '') + '</small></h2>' +
+      (rows.length ? '<table class="t"><tr><th>순번</th><th>조</th><th>조원 (역할 · 이름 · 학번 · 진로)</th><th>신청</th><th></th></tr>' + rows.map((r, i) => {
+        const ms = (r.members || []).slice().sort((a, b) => ROLES.indexOf(a.role) - ROLES.indexOf(b.role));
+        return '<tr><td class="num">' + (i < CAP ? i + 1 : '대기 ' + (i - CAP + 1)) + '</td><td><b>' + (i < CAP ? esc(R.GROUPS[i]) : '') + '</b></td><td>' +
+          ms.map((m) => '<span style="color:' + RC[ROLES.indexOf(m.role)] + ';font-weight:700;font-size:.78rem">' + esc(m.role) + '</span> ' + esc(m.name) + ' <span class="note num">' + esc(m.sid) + (m.career ? ' · ' + esc(m.career) : '') + '</span>').join('<br>') +
+          '</td><td class="note num">' + clock(r.at) + '</td><td><button class="btn ghost sm sDel" data-id="' + esc(r.id) + '">삭제</button></td></tr>'; }).join('') + '</table>' : '<p class="note">아직 신청이 없습니다.</p>') +
+      '<p class="note">앞 조를 지우면 대기 조가 올라오고, 조 번호도 신청 순서대로 다시 매겨집니다. 의견서를 받기 <b>전에</b> 명단을 확정하세요.</p></section>';
+    h += '<section class="card"><h2>직접 추가 <small>종이로 신청받은 조를 넣을 때</small></h2><div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.5rem">' +
+      ROLES.map((rn, i) => '<div><b style="color:' + RC[i] + ';font-size:.85rem">' + esc(rn) + (i === 0 ? ' · 조장' : '') + '</b><input class="txt mAdd" data-i="' + i + '" data-f="name" placeholder="이름" style="margin:.3rem 0"><input class="txt mAdd" data-i="' + i + '" data-f="sid" placeholder="학번 (5자리)" inputmode="numeric" maxlength="5"></div>').join('') +
+      '</div><div class="row" style="margin-top:.6rem"><button class="btn primary" id="bAdd">이 조 추가</button><span class="note" id="addNote"></span></div></section>';
+    h += '<section class="card"><h2>내보내기 · 비우기</h2><div class="row"><button class="btn" id="bTsv">명단 복사 (엑셀)</button><button class="btn" id="bCsv">CSV 내려받기</button><span class="grow"></span><button class="btn danger" id="bWipe"' + (rows.length ? '' : ' disabled') + '>신청 명단 전체 지우기</button><span class="note" id="wNote"></span></div></section>';
+    el('view').innerHTML = h;
+    el('view').querySelectorAll('.cp').forEach((b) => b.onclick = () => navigator.clipboard && navigator.clipboard.writeText(b.dataset.u).then(() => { b.textContent = '복사했습니다'; }));
+    el('view').querySelectorAll('.png').forEach((b) => b.onclick = () => qrPng(b.dataset.u, PROGRAM + ' · ' + b.dataset.n, PROGRAM.replace(/\s/g, '') + '_' + b.dataset.n.replace(/\s/g, '') + '_QR.png'));
+    el('view').querySelectorAll('.sDel').forEach((b) => b.onclick = function () { if (this.dataset.armed !== '1') { this.dataset.armed = '1'; this.textContent = '한 번 더'; return; } LAWDB.removeSignup(this.dataset.id); });
+    el('bAdd').onclick = function () {
+      const ms = ROLES.map((rn, i) => ({ name: (el('view').querySelector('.mAdd[data-i="' + i + '"][data-f="name"]').value || '').trim(), sid: (el('view').querySelector('.mAdd[data-i="' + i + '"][data-f="sid"]').value || '').trim(), role: rn, career: '' }));
+      if (ms.some((m) => !m.name || !/^\d{5}$/.test(m.sid))) { el('addNote').className = 'note warn'; el('addNote').textContent = '네 명의 이름과 다섯 자리 학번을 모두 넣어 주세요.'; return; }
+      LAWDB.addSignup({ members: ms, by: 'teacher' }).then(() => { el('addNote').className = 'note ok'; el('addNote').textContent = '추가했습니다.'; });
+    };
+    el('bTsv').onclick = () => { const t = signTable().map((r) => r.join('\t')).join('\n'); navigator.clipboard && navigator.clipboard.writeText(t).then(() => { el('wNote').className = 'note ok'; el('wNote').textContent = '복사했습니다.'; }); };
+    el('bCsv').onclick = () => download(PROGRAM.replace(/\s/g, '') + '_신청명단.csv', '﻿' + signTable().map((r) => r.map((v) => '"' + String(v).replace(/"/g, '""') + '"').join(',')).join('\r\n'), 'text/csv');
+    el('bWipe').onclick = function () { if (this.dataset.armed !== '1') { this.dataset.armed = '1'; this.textContent = '정말 지우려면 한 번 더'; el('wNote').className = 'note warn'; el('wNote').textContent = '되돌릴 수 없습니다. 먼저 CSV로 남겨 두세요.'; return; } LAWDB.clearSignups(); };
+  }
+  function signTable() {
+    const CAP = R.GROUPS.length, out = [['순번', '조', '역할', '이름', '학번', '진로 희망', '신청 시각']];
+    R.ordered(SIGN).forEach((r, i) => (r.members || []).forEach((m) => out.push([i < CAP ? i + 1 : '대기 ' + (i - CAP + 1), i < CAP ? R.GROUPS[i] : '', m.role, m.name, m.sid, m.career || '', clock(r.at)])));
+    return out;
+  }
+  function download(name, text, type) { const a = document.createElement('a'); a.download = name; a.href = URL.createObjectURL(new Blob([text], { type: (type || 'text/plain') + ';charset=utf-8' })); a.click(); }
+
+  /* ── 학생 기록 ── */
+  function students() {
+    const out = [];
+    R.groups(SIGN).forEach((g) => {
+      const c = R.caseOf(g.caseId);
+      g.members.forEach((m) => {
+        const op = (OPS['g' + g.g] || {})['r' + m.r] || null, th = (THX['g' + g.g] || {})['r' + m.r] || null;
+        const got = Object.values(THX['g' + g.g] || {}).find((x) => x && String(x.toSid) === String(m.sid)) || null;
+        const ref = REF['s' + m.sid] || null, k = RK[m.r], gd = c ? (c.guide[k] || {}) : {};
+        out.push({ name: m.name, sid: String(m.sid), role: m.role, r: m.r, g: g.g, label: g.label, career: m.career, client: c ? c.client : '', caseTitle: c ? c.title : '',
+          must: gd.must || '', more: gd.more || '', op: op, did: th ? th.did : '', thanks: got, reflect: ref ? { ans: ref.ans, career: ref.career || m.career } : (m.career ? { ans: [], career: m.career } : null),
+          obs: T.obs[m.sid] || { tags: [], memo: '' }, follow: T.follow[m.sid] || '', when: T.when, program: PROGRAM });
+      });
+    });
+    return out.sort((a, b) => a.sid.localeCompare(b.sid));
+  }
+  function drafts(list) {
+    list.forEach((S) => { const d = T.drafts[S.sid] = T.drafts[S.sid] || {}; const b = LAWREC.build(S, LIM); if (!d.ea) d.auto = b.auto; if (!d.ec) d.career = b.career; });
+    list.forEach((S) => { S.sim = list.some((o) => o.sid !== S.sid && LAWREC.similarity(T.drafts[S.sid].auto, T.drafts[o.sid].auto) > .6); });
+  }
+  function counter(text, max) { const c = LAWREC.chars(text), b = LAWREC.bytes(text), ban = LAWREC.banned(text);
+    return '<div class="cnt' + (c > max ? ' over' : '') + '"><span>' + c + ' / ' + max + '자 · ' + b + '바이트</span>' + (ban.length ? '<span style="color:var(--bad);font-weight:800">쓰면 안 되는 말: ' + esc(ban.join(', ')) + '</span>' : '') + '</div>'; }
+  function tabRec() {
+    const all = students(); drafts(all); saveT();
+    const classes = Array.from(new Set(all.map((s) => R.cls(s.sid).cls))).sort((a, b) => a - b);
+    const list = recCls === 'all' ? all : all.filter((s) => String(R.cls(s.sid).cls) === recCls);
+    let h = '<section class="card"><h2>학생 기록 <small>교사 관찰 → 의견서·역할·회의 기록 → 성찰(보조) 순으로 무게를 두어 초안을 만듭니다. 초안은 바로 고칠 수 있습니다.</small></h2>' +
+      '<div class="row"><span class="note">활동 일시</span><input class="txt" id="when" style="max-width:12rem" placeholder="예: 2026.12.15." value="' + esc(T.when) + '">' +
+      '<span class="note">반</span><select class="txt" id="cls" style="max-width:9rem"><option value="all">전체</option>' + classes.map((c) => '<option value="' + c + '"' + (String(c) === recCls ? ' selected' : '') + '>' + c + '반</option>').join('') + '</select>' +
+      '<span class="grow"></span><button class="btn primary" id="bPrint">인쇄용 열기</button><button class="btn" id="bTbl">표로 복사</button><button class="btn" id="bMd">원본 내려받기 (.md)</button></div></section>';
+    h += '<section class="card">' + (list.length ? list.map((S) => {
+      const d = T.drafts[S.sid], open = !!openStu[S.sid], nobs = (S.obs.tags || []).length + (S.obs.memo ? 1 : 0);
+      const badges = (S.op ? '<span class="badge ok">의견서</span>' : '<span class="badge">의견서 없음</span>') + (S.reflect && S.reflect.ans && S.reflect.ans.length ? '<span class="badge ok">성찰</span>' : '') +
+        (nobs ? '<span class="badge blue">관찰 ' + nobs + '</span>' : '<span class="badge warn">관찰 없음</span>') + (S.sim ? '<span class="badge warn">비슷함</span>' : '') +
+        (LAWREC.banned(d.auto + d.career).length ? '<span class="badge bad">금지어</span>' : '') + ((d.ea || d.ec) ? '<span class="badge">고침</span>' : '');
+      return '<div class="stu"><button data-sid="' + S.sid + '"><span class="num note">' + S.sid + '</span><b>' + esc(S.name) + '</b><span class="r" style="color:' + RC[S.r] + '">' + esc(S.role) + '</span><span class="note">' + esc(S.label) + ' · ' + esc(S.client) + '</span><span class="grow"></span>' + badges + '<span class="note">' + (open ? '접기' : '펼치기') + '</span></button>' +
+        (open ? '<div class="body"><div><h2 style="font-size:.9rem;margin:.6rem 0 .2rem">교사 관찰</h2>' + obsEditor(S.sid) +
+          '<h2 style="font-size:.9rem;margin:.8rem 0 .2rem">진로 후속 탐구 (선택)</h2><input class="txt fol" data-sid="' + S.sid + '" maxlength="120" placeholder="예: 이후 근로기준법의 청소년 보호 조항을 더 찾아 정리함" value="' + esc(S.follow) + '">' +
+          '<div class="op"><h4>의견서 · 판단</h4><p>' + esc(S.op ? S.op.judge : '—') + '</p><h4>회의에서 한 일</h4><p>' + esc(S.did || '—') + '</p><h4>받은 고마운 점</h4><p>' + esc(S.thanks ? S.thanks.text : '—') + '</p>' +
+          '<h4>성찰 (희망 진로: ' + esc((S.reflect && S.reflect.career) || '—') + ')</h4><p>' + esc(S.reflect && S.reflect.ans ? S.reflect.ans.filter(Boolean).join(' / ') : '—') + '</p></div></div>' +
+          '<div><h2 style="font-size:.9rem;margin:.6rem 0 .2rem">자율·자치활동 초안 <button class="btn ghost sm reb" data-sid="' + S.sid + '" data-k="auto">다시 만들기</button></h2>' + counter(d.auto, LIM.autoMax) +
+          '<textarea class="txt dr" data-sid="' + S.sid + '" data-k="auto" style="min-height:9rem">' + esc(d.auto) + '</textarea>' +
+          '<h2 style="font-size:.9rem;margin:.8rem 0 .2rem">진로활동 초안 <button class="btn ghost sm reb" data-sid="' + S.sid + '" data-k="career">다시 만들기</button></h2>' + counter(d.career, LIM.careerMax) +
+          '<textarea class="txt dr" data-sid="' + S.sid + '" data-k="career" style="min-height:10rem">' + esc(d.career) + '</textarea></div></div>' : '') + '</div>';
+    }).join('') : '<p class="note">신청 명단이 있어야 학생 기록이 생깁니다.</p>') + '</section>';
+    h += '<section class="card"><h2>명단 · 개인 기록 모두 지우기</h2><p class="note">담임 선생님께 드린 뒤 누르세요. 파이어베이스의 신청 명단·성찰과, 이 브라우저의 관찰·초안이 함께 지워집니다. 의견서와 보고서는 [설정]의 진행 초기화로 지웁니다.</p><div class="row"><button class="btn danger" id="bAllWipe">모두 지우기</button><span class="note" id="awNote"></span></div></section>';
+    el('view').innerHTML = h;
+    el('when').oninput = function () { T.when = this.value; saveT(); };
+    el('when').onchange = () => render(true);
+    el('cls').onchange = function () { recCls = this.value; render(true); };
+    el('view').querySelectorAll('.stu > button').forEach((b) => b.onclick = () => { openStu[b.dataset.sid] = !openStu[b.dataset.sid]; render(true); });
+    bindObs(el('view'));
+    el('view').querySelectorAll('.tags button').forEach((b) => { const f = b.onclick; b.onclick = function () { f.call(this); render(true); }; });
+    el('view').querySelectorAll('.fol').forEach((x) => { x.oninput = function () { T.follow[this.dataset.sid] = this.value; saveT(); }; x.onchange = () => render(true); });
+    el('view').querySelectorAll('.obsMemo').forEach((x) => x.onchange = () => render(true));
+    el('view').querySelectorAll('.dr').forEach((x) => x.oninput = function () { const d = T.drafts[this.dataset.sid]; d[this.dataset.k] = this.value; d[this.dataset.k === 'auto' ? 'ea' : 'ec'] = true; saveT();
+      this.previousElementSibling.outerHTML = counter(this.value, this.dataset.k === 'auto' ? LIM.autoMax : LIM.careerMax); });
+    el('view').querySelectorAll('.reb').forEach((b) => b.onclick = () => { const d = T.drafts[b.dataset.sid]; d[b.dataset.k === 'auto' ? 'ea' : 'ec'] = false; saveT(); render(true); });
+    el('bPrint').onclick = () => printView(list);
+    el('bTbl').onclick = () => { const t = [['학번', '이름', '역할', '자율·자치활동', '진로활동']].concat(list.map((S) => [S.sid, S.name, S.role, T.drafts[S.sid].auto, T.drafts[S.sid].career])).map((r) => r.map((v) => String(v).replace(/\t|\n/g, ' ')).join('\t')).join('\n');
+      navigator.clipboard && navigator.clipboard.writeText(t).then(() => alert('복사했습니다. 엑셀에 붙여 넣으세요.')); };
+    el('bMd').onclick = () => download(PROGRAM.replace(/\s/g, '') + '_학생기록_원본.md', rawMd(list), 'text/markdown');
+    el('bAllWipe').onclick = function () { if (this.dataset.armed !== '1') { this.dataset.armed = '1'; this.textContent = '정말 지우려면 한 번 더'; el('awNote').className = 'note warn'; el('awNote').textContent = '되돌릴 수 없습니다.'; return; }
+      LAWDB.clearSignups(); LAWDB.clearReflect(); T = { obs: {}, follow: {}, drafts: {}, when: T.when }; saveT(); el('awNote').className = 'note ok'; el('awNote').textContent = '지웠습니다.'; setTimeout(() => render(true), 300); };
+  }
+  function printView(list) {
+    const w = window.open('', '_blank'); if (!w) return;
+    const byCls = {}; list.forEach((S) => { const c = R.cls(S.sid).cls; (byCls[c] = byCls[c] || []).push(S); });
+    w.document.write('<!doctype html><html lang="ko"><head><meta charset="utf-8"><title>창체 특기사항 초안</title><style>@page{size:A4 landscape;margin:12mm}body{font-family:"Malgun Gothic",sans-serif;font-size:9.5pt;color:#111}h1{font-size:14pt;margin:0 0 2mm}.n{font-size:8.5pt;color:#555;margin:0 0 4mm}table{width:100%;border-collapse:collapse}th,td{border:1px solid #999;padding:2mm;vertical-align:top;line-height:1.5}th{background:#eef2f7}section{page-break-after:always}</style></head><body>' +
+      Object.keys(byCls).sort((a, b) => a - b).map((c) => '<section><h1>' + esc(PROGRAM) + ' · ' + c + '반 창체 특기사항 초안</h1><p class="n">담임 선생님께 — 교사 관찰과 학생 활동 기록으로 만든 초안입니다. 학생을 아시는 만큼 고쳐 쓰시고, 글자 수(자율·자치 ' + LIM.autoMax + '자, 진로 ' + LIM.careerMax + '자)를 확인해 주세요.</p>' +
+        '<table><tr><th style="width:9%">번호</th><th style="width:8%">이름</th><th style="width:41%">자율·자치활동</th><th>진로활동</th></tr>' +
+        byCls[c].map((S) => '<tr><td>' + S.sid + '<br>' + esc(S.role) + '</td><td>' + esc(S.name) + '</td><td>' + esc(T.drafts[S.sid].auto) + '</td><td>' + esc(T.drafts[S.sid].career) + '</td></tr>').join('') + '</table></section>').join('') +
+      '<script>window.onload=function(){window.print()}<\/script></body></html>');
+    w.document.close();
+  }
+  function rawMd(list) {
+    let s = '# ' + PROGRAM + ' 학생 기록 원본\n\n> 기재 원칙: 교사가 직접 관찰한 내용을 바탕으로 쓰고, 학생 성찰은 보조 자료로만 씁니다. 하지 않은 일을 지어내지 않습니다. \'대회·순위·수상\' 같은 말은 쓰지 않습니다. 글자 수: 자율·자치 ' + LIM.autoMax + '자, 진로 ' + LIM.careerMax + '자.\n\n';
+    list.forEach((S) => {
+      const op = S.op || {};
+      s += '## ' + S.sid + ' ' + S.name + ' · ' + S.role + ' (' + S.label + ', 의뢰인 ' + S.client + ')\n\n- 필수 쟁점: ' + S.must + '\n- 교사 관찰: ' + ((S.obs.tags || []).join(', ') || '없음') + (S.obs.memo ? ' / ' + S.obs.memo : '') + '\n- 후속 탐구: ' + (S.follow || '없음') +
+        '\n- 근거 조문: ' + ((op.laws || []).filter((x) => x && x.name).map((x) => x.name + ' ' + x.art + ' — ' + x.mine).join(' / ') || '없음') + '\n- 나의 판단: ' + (op.judge || '') + '\n- 의뢰인 조언: ' + (op.advice || '') + '\n- 더 찾아보기: ' + (op.more || '') +
+        '\n- 회의에서 한 일: ' + (S.did || '') + '\n- 받은 고마운 점: ' + (S.thanks ? S.thanks.text : '') + '\n- 희망 진로: ' + ((S.reflect && S.reflect.career) || '') + '\n- 성찰: ' + ((S.reflect && S.reflect.ans) || []).map((a, i) => (i + 1) + ') ' + a).join(' ') +
+        '\n\n### 자율·자치활동 초안\n' + T.drafts[S.sid].auto + '\n\n### 진로활동 초안\n' + T.drafts[S.sid].career + '\n\n';
+    });
+    return s;
+  }
+
+  /* ── 설정 ── */
+  function tabSet() {
+    const cases = (window.LAW_CASES || []);
+    let h = '<section class="card"><h2>해설</h2><p class="note">해설.json은 사이트에 올리지 않습니다. 여기서 한 번 불러오면 이 브라우저에만 저장되고, 공개한 칸만 학생 쪽으로 나갑니다.</p>' +
+      '<div class="row" style="margin-top:.6rem"><span class="badge ' + (SOL ? 'ok' : 'warn') + '">' + (SOL ? '불러옴 · 사연 ' + Object.keys(SOL.cases).length + '개' : '없음') + '</span><label class="btn primary">해설 불러오기<input type="file" accept=".json,application/json" class="solFile" hidden></label>' +
+      (SOL ? '<button class="btn ghost" id="bSolOff">이 브라우저에서 지우기</button>' : '') + '</div></section>';
+    h += '<section class="card"><h2>조와 사연</h2><table class="t"><tr><th>조</th><th>사연</th><th>한 줄</th></tr>' + R.GROUPS.map((g, i) => { const c = R.caseOf((CFG.caseOfGroup || [1, 2, 3, 4])[i]); return '<tr><td><b>' + esc(g) + '</b></td><td>' + esc(c ? c.title : '') + '</td><td class="note">' + esc(c ? c.line : '') + '</td></tr>'; }).join('') + '</table><p class="note">바꾸려면 config.js의 caseOfGroup을 고치세요.</p></section>';
+    h += '<section class="card"><h2>진행 초기화</h2><p class="note">단계·타이머·공개한 해설·의견서·보고서·회의 기록을 지웁니다. <b>참가 신청 명단과 성찰은 남습니다.</b> 리허설 뒤에 누르세요.</p><div class="row" style="margin-top:.5rem"><button class="btn danger" id="bReset">진행 초기화</button><button class="btn" id="bBackup">지금 기록 파일로 저장</button><span class="note" id="rNote"></span></div></section>';
+    h += '<section class="card"><h2>연결</h2><div class="kv"><span>방 이름</span><b>' + esc(ROOM) + '</b><span>방식</span><span>' + (LAWDB.mode === 'firebase' ? '파이어베이스 (기기끼리 실시간)' : '연습 모드 — 이 브라우저의 창끼리만 이어집니다') + '</span></div></section>';
+    el('view').innerHTML = h;
+    el('view').querySelectorAll('.solFile').forEach((f) => f.onchange = loadSol);
+    if (el('bSolOff')) el('bSolOff').onclick = () => { localStorage.removeItem(SK); SOL = null; render(true); };
+    el('bReset').onclick = function () { if (this.dataset.armed !== '1') { this.dataset.armed = '1'; this.textContent = '정말 초기화하려면 한 번 더'; return; } LAWDB.clearProgress(); ST = null; PUB = null; el('rNote').className = 'note ok'; el('rNote').textContent = '초기화했습니다.'; this.dataset.armed = ''; this.textContent = '진행 초기화'; };
+    el('bBackup').onclick = () => download(PROGRAM.replace(/\s/g, '') + '_기록백업_' + new Date().toISOString().slice(0, 10) + '.json', JSON.stringify({ room: ROOM, at: Date.now(), signup: SIGN, op: OPS, rep: REPS, thanks: THX, reflect: REF, teacher: T }, null, 1), 'application/json');
+  }
+
+  /* ── 연결 ── */
+  LAWDB.onSignups((o) => { SIGN = o || {}; render(); });
+  LAWDB.onState((s) => { ST = s; render(); });
+  LAWDB.onPub((p) => { PUB = p; render(); });
+  LAWDB.onOps((o) => { OPS = o || {}; render(); });
+  LAWDB.onReps((o) => { REPS = o || {}; render(); });
+  LAWDB.onThanks((o) => { THX = o || {}; render(); });
+  LAWDB.onReflect((o) => { REF = o || {}; render(); });
+  LAWDB.onStatus((s) => { link = s.state; render(); });
+  setInterval(() => {
+    if (BOARD) { boardTick(); return; }
+    if (tab === 'run' && el('cClock')) { const t = st().timer, left = leftOf(t); el('cClock').textContent = t ? fmt(left) : '—'; el('cClock').className = 'clock num ' + (!t ? '' : left <= 0 ? 'zero' : left <= 60 ? 'low' : ''); }
+  }, 1000);
+  document.addEventListener('keydown', (e) => {
+    if (BOARD || typing() || /BUTTON/.test((document.activeElement || {}).tagName || '') || tab !== 'run') return;
+    if (e.code === 'Space') { e.preventDefault(); timer('toggle'); }
+    if (e.key === 'ArrowRight') goStep(st().step + 1);
+    if (e.key === 'ArrowLeft') goStep(st().step - 1);
+  });
+  if (BOARD) { el('console').hidden = true; el('board').hidden = false; document.body.classList.add('board'); document.title = '생활법률 합동상담 · 공지 화면'; }
+  window.addEventListener('hashchange', () => location.reload());
+  render(true);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>생활법률 합동상담 · 설치 안내</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+:root{--brand:#185ABD;--ink:#103F91;--soft:#E8F0FB;--t1:#191F28;--t2:#4E5968;--t3:#8B95A1;--line:#E5E8EB;--warn:#B25E00;--warn-soft:#FFF2D9;--bad:#E42939;}
+*{box-sizing:border-box;}
+body{margin:0;background:#F2F4F6;color:var(--t1);font-family:"Pretendard Variable",Pretendard,system-ui,"Malgun Gothic",sans-serif;font-size:16px;line-height:1.7;word-break:keep-all;}
+header{background:var(--brand);color:#fff;}
+header .in{max-width:52rem;margin:0 auto;padding:2rem 1.2rem 1.6rem;}
+header small{opacity:.8;font-weight:600;} header h1{margin:.2rem 0 .3rem;font-size:1.8rem;letter-spacing:-.03em;} header p{margin:0;opacity:.9;}
+main{max-width:52rem;margin:0 auto;padding:1.2rem 1.2rem 4rem;}
+nav.toc{background:#fff;border-radius:16px;padding:1rem 1.3rem;margin-bottom:1rem;}
+nav.toc a{color:var(--ink);text-decoration:none;font-weight:600;margin-right:1rem;white-space:nowrap;line-height:2;}
+section{background:#fff;border-radius:16px;padding:1.3rem 1.5rem;margin-bottom:1rem;}
+h2{margin:0 0 .6rem;font-size:1.25rem;letter-spacing:-.02em;display:flex;align-items:center;gap:.55rem;}
+h2 i{font-style:normal;display:inline-grid;place-items:center;width:1.8rem;height:1.8rem;border-radius:8px;background:var(--brand);color:#fff;font-size:.9rem;}
+h3{font-size:1rem;margin:1.1rem 0 .3rem;color:var(--ink);}
+ol,ul{padding-left:1.3rem;margin:.3rem 0;} li{margin:.2rem 0;}
+code{background:#F2F4F6;border-radius:6px;padding:.05rem .35rem;font-size:.9em;}
+pre{background:#191F28;color:#E5E8EB;border-radius:12px;padding:.9rem 1rem;overflow-x:auto;font-size:.85rem;line-height:1.55;}
+table{width:100%;border-collapse:collapse;font-size:.92rem;margin:.4rem 0;}
+th,td{border-bottom:1px solid var(--line);padding:.5rem .5rem;text-align:left;vertical-align:top;}
+th{font-size:.8rem;color:var(--t3);}
+.box{border-radius:12px;padding:.8rem 1rem;margin:.7rem 0;font-size:.94rem;}
+.box.warn{background:var(--warn-soft);color:#6B3A00;} .box.info{background:var(--soft);color:var(--ink);}
+.box b{font-weight:800;}
+.no{color:var(--bad);font-weight:700;}
+</style>
+</head>
+<body>
+<header><div class="in"><small>선생님용</small><h1>생활법률 합동상담 사이트 설치 안내</h1><p>참가 신청 → 활동 당일(의견서·보고서·해설 공개) → 성찰 과제 → 창체 특기사항 초안까지 한 사이트에서 진행합니다.</p></div></header>
+<main>
+<nav class="toc"><a href="#files">1. 파일 구성</a><a href="#fb">2. 파이어베이스</a><a href="#host">3. 사이트 올리기</a><a href="#before">4. 활동 전 준비</a><a href="#day">5. 활동 당일</a><a href="#rec">6. 학생 기록</a><a href="#trouble">7. 문제 해결</a></nav>
+
+<section id="files"><h2><i>1</i>파일 구성</h2>
+<table><tr><th>파일</th><th>누가 · 언제</th><th>하는 일</th></tr>
+<tr><td><code>index.html</code></td><td>교사 · 노트북</td><td>교사 콘솔 (진행 · 제출·관찰 · 참가 신청 · 학생 기록 · 설정). <code>index.html#board</code>는 TV용 공지 화면</td></tr>
+<tr><td><code>signup.html</code></td><td>학생 · 활동 전</td><td>4인 1조 참가 신청 (역할: 민사 변호사·형사 변호사·세무사·노무사)</td></tr>
+<tr><td><code>student.html</code></td><td>학생 · 활동 중 휴대폰</td><td>사연 읽기 · 전문가 의견서 · 합동 상담 보고서 · 고마운 점 · 공개된 해설</td></tr>
+<tr><td><code>reflect.html</code></td><td>학생 · 활동 후</td><td>성찰 과제 5문항 (다음 시간까지)</td></tr>
+<tr><td><code>config.js</code></td><td>교사가 한 번 고침</td><td>파이어베이스 연결값, 방 이름, 일시·장소, 조↔사연 연결, 글자 수</td></tr>
+<tr><td><code>cases.js</code></td><td>—</td><td>네 사연, 역할별 질문·판단 단서·개념 카드, 증거 목록 (<b>정답 없음</b>)</td></tr>
+<tr><td><code>db.js · roster.js · steps.js · record.js · common.css · qrcode.js</code></td><td>—</td><td>연결 · 조 편성 · 단계 · 기록 초안 · 디자인 · QR</td></tr>
+</table>
+<div class="box warn"><b>해설.json은 사이트에 올리지 마세요.</b> 사이트 파일은 누구나 주소로 열어 볼 수 있습니다. 해설.json은 선생님 노트북에만 두고, 활동 당일 콘솔에서 [해설 불러오기]로 읽어 들입니다. 그러면 선생님이 공개 칸을 누른 항목만 학생 쪽으로 나갑니다.</div>
+</section>
+
+<section id="fb"><h2><i>2</i>파이어베이스 (실시간 연결)</h2>
+<p>학생 휴대폰·교사 노트북·TV가 서로 이어지려면 파이어베이스 Realtime Database가 필요합니다. 모의투자 사이트에서 쓰던 프로젝트를 그대로 써도 됩니다. <b>방 이름(roomId)이 달라서</b> 기록이 섞이지 않습니다.</p>
+<ol>
+<li><a href="https://console.firebase.google.com/">console.firebase.google.com</a> → 프로젝트 선택(또는 새로 만들기).</li>
+<li>왼쪽 [빌드] → [Realtime Database] → [데이터베이스 만들기] (위치는 아무 곳, <b>잠금 모드</b>로 시작).</li>
+<li>[규칙] 탭에 아래를 붙여 넣고 [게시]. 모의투자 규칙이 이미 있다면 <code>rooms</code> 아래가 열려 있는지만 확인하세요.</li>
+</ol>
+<pre>{
+  "rules": {
+    "rooms": {
+      "$room": { ".read": true, ".write": true }
+    }
+  }
+}</pre>
+<ol start="4"><li>[프로젝트 설정] → [내 앱] → 웹 앱의 <code>firebaseConfig</code>에서 <code>apiKey · authDomain · databaseURL · projectId</code>를 <code>config.js</code>의 <code>firebase</code>에 넣습니다. (지금 config.js에는 모의투자와 같은 프로젝트 값이 들어 있습니다.)</li>
+<li><code>roomId</code>는 학교·학년이 들어간, 남이 짐작하기 어려운 이름으로 두세요. 해마다 바꾸면 지난 기록과 섞이지 않습니다.</li></ol>
+<div class="box info"><code>firebase</code> 값을 비워 두면 <b>연습 모드</b>로 돌아갑니다. 한 브라우저 안의 창끼리만 이어지므로, 노트북 하나로 콘솔·공지 화면·학생 화면을 띄워 리허설할 때 쓰세요.</div>
+</section>
+
+<section id="host"><h2><i>3</i>사이트 올리기</h2>
+<h3>GitHub Pages (모의투자와 같은 방법)</h3>
+<ol><li>GitHub에서 새 저장소(예: <code>law</code>)를 만들고 [Add file] → [Upload files]로 이 폴더의 파일을 모두 올립니다. <span class="no">해설.json 제외.</span></li>
+<li>[Settings] → [Pages] → Branch를 <code>main</code> / <code>(root)</code>로 → [Save]. 1~2분 뒤 <code>https://아이디.github.io/law/</code>가 열립니다.</li>
+<li>기존 <code>invest</code> 저장소 안에 <code>law/</code> 폴더로 올려도 됩니다. 그러면 주소는 <code>…/invest/law/</code>입니다.</li></ol>
+<h3>Netlify (끌어다 놓기)</h3>
+<ol><li><a href="https://app.netlify.com/drop">app.netlify.com/drop</a>에 폴더를 끌어다 놓으면 주소가 바로 생깁니다.</li></ol>
+<div class="box warn">교사 콘솔(<code>index.html</code>)에는 학생 이름과 학번이 보입니다. 콘솔 주소는 학생에게 알려 주지 말고, 학생에게는 <code>signup.html · student.html · reflect.html</code>의 QR만 나눠 주세요.</div>
+</section>
+
+<section id="before"><h2><i>4</i>활동 전 준비</h2>
+<ol>
+<li><b>config.js</b>에 일시·장소를 적습니다. 조↔사연 연결(<code>caseOfGroup</code>)은 기본값이 1조=사연1 … 4조=사연4입니다.</li>
+<li>콘솔 [참가 신청] 탭에서 <b>참가 신청 QR</b>을 그림으로 저장해 포스터·단톡방에 올립니다. 종이로 받은 조는 [직접 추가]로 넣습니다.</li>
+<li>신청 순서대로 1조~4조가 정해지고, 5번째 조부터는 대기입니다. <b>활동 전에 명단을 확정</b>하세요(앞 조를 지우면 뒤 조의 조 번호가 바뀝니다).</li>
+<li>종이 자료를 인쇄합니다: <code>5_조별배부_상담신청서와_증거.pdf</code>(조별 1부), 의견서 종이 백업용 <code>6_개인활동지</code>(휴대폰이 없는 학생용).</li>
+<li><b>리허설</b>: 노트북에서 콘솔과 공지 화면, 휴대폰 한 대로 student.html을 열어 단계 넘기기·제출·해설 공개를 한 번 해 보고, [설정] → [진행 초기화]로 지웁니다(신청 명단은 남습니다).</li>
+</ol>
+</section>
+
+<section id="day"><h2><i>5</i>활동 당일 (50분)</h2>
+<table><tr><th>단계</th><th>시간</th><th>선생님</th><th>학생 휴대폰</th></tr>
+<tr><td>시작 전</td><td>—</td><td>콘솔에서 해설.json 불러오기 · [공지 화면 열기] → TV로. QR이 자동으로 뜸</td><td>QR → 조·이름·학번으로 들어오기</td></tr>
+<tr><td>1. 의뢰 접수</td><td>3분</td><td>[다음 단계] · 스페이스로 타이머 시작. 조별 봉투 배부</td><td>사연 탭 열림</td></tr>
+<tr><td>2. 개인 검토</td><td>25분</td><td>돌아다니며 관찰 — 콘솔 [제출·관찰]에서 칸을 눌러 태그·메모</td><td>국가법령정보센터에서 조문 찾기 → 의견서 제출</td></tr>
+<tr><td>3. 합동 상담 회의</td><td>12분</td><td>제출 현황 확인 (TV 오른쪽 아래)</td><td>조원 의견서 읽기 → 보고서(조장) · 회의 기록과 고마운 점(모두)</td></tr>
+<tr><td>4~7. 조별 발표</td><td>각 2분</td><td>발표가 끝나면 [해설 공개]에서 그 조 칸을 눌러 공개 → TV·휴대폰에 바로 뜸</td><td>해설 탭에서 내 판단과 비교</td></tr>
+<tr><td>8. 마무리</td><td>2분</td><td>공지 QR이 성찰 과제로 바뀜</td><td>reflect.html — 다음 시간까지</td></tr></table>
+<div class="box info">시간이 모자라면 [모두 다시 열기]를 켜서 마감된 의견서·보고서를 다시 받을 수 있습니다. 학생이 쓰던 글은 휴대폰에 저장되어 있어 새로고침해도 남습니다.</div>
+</section>
+
+<section id="rec"><h2><i>6</i>학생 기록 (창체 특기사항 초안)</h2>
+<ol>
+<li>[학생 기록] 탭에 활동 일시를 적으면 학생마다 <b>자율·자치활동(500자)</b>과 <b>진로활동(700자)</b> 초안이 생깁니다.</li>
+<li>초안의 무게는 <b>교사 관찰 → 의견서·역할·회의 기록 → 성찰(보조)</b> 순입니다. <b>관찰 없음</b> 배지가 붙은 학생은 초안이 비슷해지므로 관찰 태그나 메모를 꼭 넣어 주세요(<b>비슷함</b> 배지).</li>
+<li>글자 수·바이트(NEIS 기준: 한글 3, 줄바꿈 2)를 함께 보여 주고, '대회·순위·수상' 같은 쓰면 안 되는 말이 있으면 빨갛게 알려 줍니다.</li>
+<li>[인쇄용 열기]는 반별로 나눠 담임 선생님께 드리기 좋게 출력합니다. [원본 내려받기]는 근거 자료 전체를 .md로 저장합니다.</li>
+<li>관찰과 초안은 <b>선생님 브라우저에만</b> 저장됩니다. 다른 컴퓨터로 옮기려면 [설정] → [지금 기록 파일로 저장]을 쓰세요.</li>
+<li>담임 선생님께 드린 뒤에는 [모두 지우기]로 학생 개인정보(신청 명단·성찰·관찰)를 지워 주세요.</li>
+</ol>
+<div class="box warn">초안은 출발점입니다. 실제로 관찰하지 않은 내용은 지우고, 학생을 아는 만큼 고쳐서 기재하세요.</div>
+</section>
+
+<section id="trouble"><h2><i>7</i>문제 해결</h2>
+<table><tr><th>증상</th><th>확인할 것</th></tr>
+<tr><td>콘솔 위에 '연결 실패'</td><td>config.js의 databaseURL, 파이어베이스 규칙의 <code>rooms</code> 열림, 학교 와이파이가 firebaseio.com을 막는지(휴대폰 핫스팟으로 확인)</td></tr>
+<tr><td>학생이 자기 조를 못 찾음</td><td>신청 명단에 있는지, 정원(4개 조) 밖 대기인지</td></tr>
+<tr><td>학번이 맞지 않다고 나옴</td><td>신청할 때 적은 학번(다섯 자리)과 같은지 — 콘솔 [참가 신청]에서 확인</td></tr>
+<tr><td>해설 공개 칸이 안 보임</td><td>주황 줄의 [해설 불러오기]로 해설.json을 다시 고르기</td></tr>
+<tr><td>TV 글씨가 작거나 잘림</td><td>브라우저 전체 화면(F11), 확대 100%</td></tr>
+<tr><td>한 학생이 다른 사람으로 들어감</td><td>학생 화면 맨 아래 [다른 사람으로 들어가기]</td></tr>
+<tr><td>노트북을 바꿈</td><td>새 노트북에서 해설.json만 다시 불러오면 됩니다. 관찰·초안은 기록 파일로 옮기세요</td></tr></table>
+</section>
+</main>
+</body>
+</html>

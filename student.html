@@ -1,0 +1,478 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="color-scheme" content="light">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>생활법률 합동상담 · 전문가 의견서</title>
+<meta name="theme-color" content="#FFFFFF">
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="common.css">
+<style>
+.me{background:var(--surface);border-radius:22px;margin-top:.75rem;overflow:hidden;}
+.me .band{padding:1rem 1.2rem .9rem;color:#fff;position:relative;}
+.me .band small{font-size:.78rem;opacity:.85;font-weight:600;}
+.me .band b{display:block;font-size:1.35rem;letter-spacing:-.03em;line-height:1.25;}
+.me .band .who{font-size:.86rem;opacity:.9;}
+.me .st{padding:.7rem 1.2rem;font-size:.86rem;color:var(--t2);display:flex;gap:.5rem;align-items:center;}
+.me .st .dot{width:8px;height:8px;border-radius:50%;background:var(--brand);flex:none;}
+
+.tabbar{position:fixed;left:0;right:0;bottom:0;z-index:40;background:rgba(255,255,255,.96);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom);}
+.tabbar-in{max-width:30rem;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);}
+.tabbar button{border:0;background:none;padding:.55rem 0 .6rem;display:flex;flex-direction:column;align-items:center;gap:.15rem;font-size:.74rem;font-weight:600;color:var(--t3);position:relative;}
+.tabbar button i{font-style:normal;font-size:1.15rem;line-height:1.2;}
+.tabbar button[aria-selected="true"]{color:var(--brand);}
+.tabbar button .new{position:absolute;top:.45rem;left:calc(50% + .6rem);width:8px;height:8px;border-radius:50%;background:var(--bad);}
+
+.story p{margin:0 0 .8rem;font-size:.97rem;line-height:1.72;color:var(--t1);text-indent:.6em;}
+.qlist{display:grid;gap:.45rem;margin-top:.4rem;}
+.qlist div{border-radius:14px;background:var(--surface-2);box-shadow:inset 0 0 0 1px var(--line);padding:.65rem .8rem;font-size:.9rem;}
+.qlist div em{display:block;font-style:normal;font-size:.74rem;font-weight:700;margin-bottom:.1rem;}
+.qlist div.mine{box-shadow:inset 0 0 0 2px var(--brand);background:var(--brand-soft);}
+.evs{display:flex;flex-wrap:wrap;gap:.35rem;}
+.evs span{font-size:.8rem;background:var(--fill);border-radius:8px;padding:.25rem .55rem;color:var(--t2);}
+
+.task{border-radius:16px;background:var(--brand-soft);padding:.85rem .9rem;margin-bottom:.9rem;}
+.task .q{font-weight:700;font-size:1rem;line-height:1.45;color:var(--brand-ink);}
+.line{display:flex;gap:.45rem;align-items:baseline;font-size:.88rem;margin-top:.45rem;line-height:1.45;}
+.line .k{flex:none;font-size:.7rem;font-weight:800;border-radius:6px;padding:.08rem .45rem;}
+.k.m{background:var(--brand);color:#fff;} .k.o{background:#fff;color:var(--t2);box-shadow:inset 0 0 0 1px var(--line-2);}
+.clue{margin-top:.6rem;border-radius:12px;background:#fff;border:1.5px dashed #c9a46a;padding:.6rem .75rem;font-size:.86rem;line-height:1.55;}
+.clue b{color:#8a5a12;margin-right:.3rem;}
+.cpt{margin-top:.6rem;border-radius:12px;background:#EEF6F0;padding:.6rem .75rem;font-size:.86rem;line-height:1.55;}
+.cpt b{color:#2c6b3f;display:block;font-size:.76rem;margin-bottom:.15rem;}
+.cpt em{font-style:normal;font-weight:800;color:#2c6b3f;margin-right:.3rem;}
+
+.sec{margin:1.1rem 0 .45rem;font-size:.95rem;font-weight:800;display:flex;align-items:center;gap:.45rem;}
+.sec i{font-style:normal;display:inline-grid;place-items:center;width:1.4rem;height:1.4rem;border-radius:50%;background:var(--brand);color:#fff;font-size:.78rem;}
+.sec small{font-weight:500;color:var(--t3);font-size:.78rem;}
+.evpick{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:.5rem;}
+.evpick button{border:0;border-radius:10px;padding:.45rem .7rem;font-size:.84rem;font-weight:600;background:var(--fill);color:var(--t2);}
+.evpick button[aria-pressed="true"]{background:var(--brand);color:#fff;}
+.lawbox{border-radius:16px;background:var(--surface-2);box-shadow:inset 0 0 0 1px var(--line);padding:.75rem;margin-bottom:.5rem;}
+.lawbox h4{margin:0 0 .45rem;font-size:.82rem;display:flex;gap:.4rem;align-items:center;color:var(--t2);}
+.lawbox input,.lawbox textarea{background:#fff;}
+.lgrid{display:grid;grid-template-columns:1fr 6.5rem;gap:.45rem;margin-bottom:.45rem;}
+.lawbox textarea{min-height:4.2rem;}
+.sent{display:flex;align-items:center;gap:.4rem;font-size:.84rem;font-weight:700;color:var(--ok);margin-top:.6rem;}
+.sent::before{content:"✓";display:inline-grid;place-items:center;width:1.2rem;height:1.2rem;border-radius:50%;background:var(--ok);color:#fff;font-size:.7rem;}
+.lock{border-radius:14px;background:var(--fill);padding:.8rem .9rem;font-size:.88rem;color:var(--t2);margin-bottom:.8rem;}
+.lawlink{display:flex;align-items:center;justify-content:space-between;gap:.6rem;border-radius:14px;background:var(--fill);padding:.6rem .6rem .6rem .9rem;font-size:.84rem;color:var(--t2);margin-bottom:.4rem;}
+
+.peer{border-radius:16px;background:var(--surface-2);box-shadow:inset 0 0 0 1px var(--line);padding:.75rem .85rem;margin-bottom:.5rem;}
+.peer h4{margin:0 0 .3rem;font-size:.86rem;display:flex;gap:.4rem;align-items:baseline;}
+.peer h4 span{font-weight:500;color:var(--t3);font-size:.78rem;}
+.peer p{margin:.15rem 0 0;font-size:.86rem;line-height:1.55;color:var(--t2);}
+.peer p b{color:var(--t1);font-size:.76rem;margin-right:.3rem;}
+.peer.empty{color:var(--t4);font-size:.86rem;}
+.rbox{border-radius:16px;background:var(--surface-2);box-shadow:inset 0 0 0 1px var(--line);padding:.75rem;margin-bottom:.55rem;}
+.rbox h4{margin:0 0 .45rem;font-size:.84rem;color:var(--t2);}
+.rbox input,.rbox textarea,.rbox select{background:#fff;margin-bottom:.4rem;}
+.rbox textarea{min-height:4.4rem;}
+.rchips{display:flex;flex-wrap:wrap;gap:.35rem;margin-bottom:.45rem;}
+.rchips button{border:0;border-radius:9px;padding:.35rem .6rem;font-size:.8rem;font-weight:600;background:#fff;box-shadow:inset 0 0 0 1.5px var(--line-2);color:var(--t2);}
+.rchips button[aria-pressed="true"]{background:var(--brand);color:#fff;box-shadow:none;}
+
+.ans{border-radius:16px;overflow:hidden;margin-bottom:.6rem;box-shadow:inset 0 0 0 1px var(--line);}
+.ans h4{margin:0;color:#fff;padding:.6rem .85rem;font-size:.9rem;}
+.ans h4 small{display:block;font-weight:500;opacity:.9;font-size:.76rem;}
+.ans .in{padding:.65rem .85rem;background:#fff;font-size:.88rem;line-height:1.6;}
+.ans .in div{margin-bottom:.5rem;} .ans .in div:last-child{margin-bottom:0;}
+.ans .in b{display:block;font-size:.72rem;color:var(--t3);}
+.ans .in .miss{color:var(--bad);}
+.ans .wait{color:var(--t4);font-size:.84rem;}
+.ans.mine{box-shadow:inset 0 0 0 2px var(--brand);}
+.minejudge{border-top:1px dashed var(--line-2);margin-top:.5rem;padding-top:.5rem;color:var(--brand-ink);}
+
+.modal{position:fixed;inset:0;z-index:60;background:rgba(25,31,40,.45);display:grid;place-items:end center;padding:1rem;}
+.modal .box{background:#fff;border-radius:20px;padding:1.2rem;max-width:28rem;width:100%;}
+.modal h3{margin:0 0 .4rem;font-size:1.05rem;}
+.modal p{margin:0 0 1rem;font-size:.9rem;color:var(--t2);}
+.modal .row{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;}
+</style>
+</head>
+<body>
+<header class="top"><div class="top-in"><span class="brand">합동상담 의견서</span><span class="grow"></span><span class="chip timer" id="tChip" hidden>0:00</span><span class="chip" id="meChip">—</span></div></header>
+
+<div class="wrap">
+  <!-- 나는 누구인가요 -->
+  <section id="who" hidden>
+    <div class="hero"><small>법률 · 세무 합동 상담소</small><b>오늘 나는 전문가입니다</b><p>내 조와 이름을 고르고, 학번으로 확인하세요.</p></div>
+    <section class="card"><h2>내 조</h2><p class="sub" id="whoSub">신청 명단을 불러오는 중…</p><div class="pick" id="pickG"></div></section>
+    <section class="card" id="pickNameBox" hidden><h2>내 이름</h2><p class="sub">이름을 누르고 학번을 적으세요.</p><div class="pick" id="pickN"></div>
+      <div style="margin-top:.8rem" id="sidBox" hidden><input id="sidIn" inputmode="numeric" maxlength="5" placeholder="내 학번 다섯 자리 (확인용)"><p class="note" id="whoNote" style="margin:.5rem 0 0"></p>
+      <button class="btn primary block" id="btnIn" style="margin-top:.6rem">들어가기</button></div></section>
+  </section>
+
+  <!-- 본 화면 -->
+  <section id="app" hidden>
+    <div class="me"><div class="band" id="meBand"><small id="meCase"></small><b id="meRole"></b><span class="who" id="meWho"></span></div>
+      <div class="st"><span class="dot"></span><span id="stepTxt"></span></div></div>
+
+    <div id="vCase">
+      <div class="lock" id="caseLock" hidden>선생님이 활동을 시작하면 사연이 열립니다. 잠시 기다려 주세요.</div>
+      <section class="card" id="caseCard">
+        <h2 id="cTitle"></h2><p class="sub" id="cSub"></p>
+        <div class="story" id="cStory"></div>
+        <div class="sec" style="margin-top:.4rem">전문가에게 묻고 싶은 것</div>
+        <div class="qlist" id="cQs"></div>
+        <div class="sec">종이로 받은 증거 자료</div>
+        <div class="evs" id="cEvs"></div>
+      </section>
+    </div>
+
+    <div id="vOp" hidden>
+      <section class="card">
+        <div class="task" id="opTask"></div>
+        <div class="lock" id="opLock" hidden></div>
+        <div id="opForm">
+          <div class="sec"><i>1</i>판단에 쓴 증거 <small>누르면 표시됩니다</small></div>
+          <div class="evpick" id="opEv"></div>
+          <input id="opEvNote" maxlength="80" placeholder="그 증거의 핵심 내용을 한 줄로">
+          <div class="sec"><i>2</i>근거 법 조문 <small>필수 1개, 찾으면 1개 더</small></div>
+          <div class="lawlink"><span>국가법령정보센터에서 법령 이름을 검색하세요</span><a class="btn sm primary" href="https://www.law.go.kr" target="_blank" rel="noopener">열기</a></div>
+          <div class="lawbox"><h4><span class="k m line" style="margin:0;padding:.08rem .45rem">필수</span>조문 1</h4>
+            <div class="lgrid"><input id="l0n" maxlength="30" placeholder="법 이름 (예: 근로기준법)"><input id="l0a" maxlength="20" placeholder="조 · 항"></div>
+            <textarea id="l0m" maxlength="300" placeholder="이 조문이 말하는 것 (내 말로)"></textarea></div>
+          <div class="lawbox"><h4><span class="k o line" style="margin:0;padding:.08rem .45rem">선택</span>조문 2</h4>
+            <div class="lgrid"><input id="l1n" maxlength="30" placeholder="법 이름"><input id="l1a" maxlength="20" placeholder="조 · 항"></div>
+            <textarea id="l1m" maxlength="300" placeholder="이 조문이 말하는 것 (내 말로)"></textarea></div>
+          <div class="sec"><i>3</i>나의 판단 <small>"~이므로 ~이다"</small></div>
+          <textarea id="opJudge" maxlength="800" placeholder="증거와 조문을 연결해서 판단을 쓰세요"></textarea>
+          <div class="sec"><i>4</i>의뢰인에게 할 조언 <small>걱정을 알아주는 한 문장으로 시작</small></div>
+          <textarea id="opAdvice" maxlength="600" placeholder="예) 많이 놀라셨죠. 먼저 …부터 하세요."></textarea>
+          <div class="sec"><i>+</i>더 찾아보기 <small>시간이 남으면 (선택)</small></div>
+          <textarea id="opMore" maxlength="600" placeholder="추가 쟁점을 찾아본 내용"></textarea>
+          <p class="note" id="opNote"></p>
+          <button class="btn primary block" id="btnOp" style="margin-top:.4rem">의견서 제출</button>
+          <div id="opSent" class="sent" hidden></div>
+        </div>
+      </section>
+    </div>
+
+    <div id="vRep" hidden>
+      <div class="lock" id="repLock" hidden></div>
+      <section class="card"><h2>조원들의 의견서</h2><p class="sub">회의 전에 다른 전문가의 판단과 조언을 읽어 보세요.</p><div id="peers"></div></section>
+      <section class="card"><h2>합동 상담 보고서</h2><p class="sub" id="repSub"></p>
+        <div id="repForm">
+          <div class="sec"><i>1</i>두 분야 이상이 얽힌 쟁점</div>
+          <div id="crossBox"></div>
+          <div class="sec"><i>2</i>의뢰인이 가장 먼저 해야 할 일 3가지</div>
+          <div id="todoBox"></div>
+          <input id="repPresenter" maxlength="10" placeholder="발표자 이름">
+          <p class="note" id="repNote"></p>
+          <button class="btn primary block" id="btnRep" style="margin-top:.4rem">보고서 제출</button>
+          <button class="btn ghost sm block" id="btnTakeRep" style="margin-top:.5rem" hidden>조장 대신 내가 입력하기</button>
+          <div id="repSent" class="sent" hidden></div>
+        </div>
+      </section>
+      <section class="card"><h2>회의 기록 · 고마운 점</h2><p class="sub">한 사람이 한 명에게 고마운 점을 써 줍니다. 모두 한 번씩 받게 됩니다.</p>
+        <div class="sec"><i>3</i>회의에서 내가 한 일 <small>제안, 질문, 조율 등</small></div>
+        <textarea id="thDid" maxlength="200" placeholder="예) 세무사와 노무사의 결론이 달라 근거를 비교하자고 제안했다"></textarea>
+        <div class="sec" id="thToLabel"><i>♥</i>고마운 점</div>
+        <textarea id="thText" maxlength="200" placeholder="회의에서 그 친구 덕분에 좋았던 점을 구체적으로"></textarea>
+        <p class="note" id="thNote"></p>
+        <button class="btn primary block" id="btnTh" style="margin-top:.4rem">회의 기록 제출</button>
+        <div id="thSent" class="sent" hidden></div>
+      </section>
+    </div>
+
+    <div id="vAns" hidden>
+      <section class="card"><h2>해설</h2><p class="sub">발표가 끝나면 선생님이 하나씩 공개합니다. 내 판단과 비교해 보세요. 결론이 달라도 증거와 조문으로 근거를 댔다면 괜찮습니다.</p><div id="ansBox"></div></section>
+      <section class="card" id="reflectCard" hidden><h2>성찰 과제</h2><p class="sub">해설을 읽었으면 성찰 과제를 내 주세요. 다음 시간까지입니다.</p><a class="btn primary block" href="reflect.html">성찰 과제 쓰러 가기</a></section>
+    </div>
+    <p class="note" style="text-align:center;margin-top:1rem"><span id="linkNote"></span> · <button class="btn ghost sm" id="btnOut" style="height:1.9rem;font-size:.76rem;padding:0 .6rem">다른 사람으로 들어가기</button></p>
+  </section>
+</div>
+
+<nav class="tabbar" id="tabbar" hidden><div class="tabbar-in">
+  <button data-v="vCase" aria-selected="true"><i>✉</i>사연</button>
+  <button data-v="vOp" aria-selected="false"><i>✎</i>의견서</button>
+  <button data-v="vRep" aria-selected="false"><i>⚖</i>합동 보고서</button>
+  <button data-v="vAns" aria-selected="false"><i>¶</i>해설<span class="new" id="ansDot" hidden></span></button>
+</div></nav>
+
+<div class="modal" id="modal" hidden><div class="box"><h3 id="mT"></h3><p id="mP"></p><div class="row"><button class="btn" id="mNo">고칠게요</button><button class="btn primary" id="mYes">그대로 제출</button></div></div></div>
+
+<script src="config.js"></script>
+<script src="db.js"></script>
+<script src="cases.js"></script>
+<script src="roster.js"></script>
+<script src="steps.js"></script>
+<script>
+(function () {
+  'use strict';
+  const el = (id) => document.getElementById(id);
+  const esc = (s) => String(s == null ? '' : s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const R = LAWROSTER, ROLES = R.ROLES, RK = R.ROLEKEY, RC = ['var(--r0)', 'var(--r1)', 'var(--r2)', 'var(--r3)'];
+  const ROOM = LAWDB.roomId, LSME = 'lawcounsel.me.' + ROOM;
+  let SIGN = {}, ST = null, PUB = null, OPS = {}, REPS = {}, THX = {}, link = 'connecting';
+  let me = null, ctx = null, pickG = 0, pickSid = '';
+  let seenPub = 0;
+  try { me = JSON.parse(localStorage.getItem(LSME) || 'null'); } catch (e) {}
+  const DK = () => 'lawcounsel.draft.' + ROOM + '.' + (me && me.sid);
+  let draft = { op: null, rep: null, th: null };
+  const saveDraft = () => { try { localStorage.setItem(DK(), JSON.stringify(draft)); } catch (e) {} };
+  const loadDraft = () => { try { draft = Object.assign({ op: null, rep: null, th: null }, JSON.parse(localStorage.getItem(DK()) || '{}')); } catch (e) {} };
+  const clock = (t) => t ? new Date(t).toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit', hour12: false }) : '';
+
+  /* ───────── 나는 누구인가요 ───────── */
+  function renderWho() {
+    const gs = R.groups(SIGN);
+    el('whoSub').textContent = gs.length ? '신청한 조 가운데 내 조를 고르세요.' : '아직 신청 명단이 없습니다. 선생님께 말씀하세요.';
+    el('pickG').innerHTML = gs.map((g) => '<button data-g="' + g.g + '" aria-pressed="' + (pickG === g.g) + '"><b>' + esc(g.label) + '</b><span>' +
+      g.members.map((m) => esc(m.name)).join(' · ') + '</span></button>').join('');
+    el('pickG').querySelectorAll('button').forEach((b) => b.onclick = function () { pickG = +this.dataset.g; pickSid = ''; renderWho(); });
+    const g = gs.find((x) => x.g === pickG);
+    el('pickNameBox').hidden = !g;
+    if (g) {
+      el('pickN').innerHTML = g.members.map((m) => '<button data-s="' + esc(m.sid) + '" aria-pressed="' + (pickSid === String(m.sid)) + '"><b>' + esc(m.name) + '</b>' +
+        (m.lead ? '<span>조장</span>' : '') + '<span class="rtag" style="color:' + RC[m.r] + '">' + esc(m.role) + '</span></button>').join('');
+      el('pickN').querySelectorAll('button').forEach((b) => b.onclick = function () { pickSid = this.dataset.s; renderWho(); el('sidIn').focus(); });
+    }
+    el('sidBox').hidden = !pickSid;
+  }
+  el('sidIn').oninput = function () { this.value = this.value.replace(/[^0-9]/g, ''); };
+  el('btnIn').onclick = function () {
+    if (el('sidIn').value.trim() !== pickSid) { el('whoNote').className = 'note warn'; el('whoNote').textContent = '학번이 신청 명단과 다릅니다. 다시 확인하세요.'; return; }
+    me = { sid: pickSid }; try { localStorage.setItem(LSME, JSON.stringify(me)); } catch (e) {}
+    el('sidIn').value = ''; boot();
+  };
+  el('btnOut').onclick = function () {
+    if (this.dataset.armed !== '1') { this.dataset.armed = '1'; this.textContent = '한 번 더 누르면 나갑니다'; return; }
+    try { localStorage.removeItem(LSME); } catch (e) {}
+    me = null; ctx = null; pickG = 0; pickSid = ''; this.dataset.armed = ''; this.textContent = '다른 사람으로 들어가기'; boot();
+  };
+
+  /* ───────── 본 화면 ───────── */
+  function boot() {
+    ctx = me ? R.find(SIGN, me.sid) : null;
+    if (me && !ctx && Object.keys(SIGN).length) { /* 명단에서 빠졌다 */ me = null; try { localStorage.removeItem(LSME); } catch (e) {} }
+    el('who').hidden = !!ctx; el('app').hidden = !ctx; el('tabbar').hidden = !ctx;
+    if (!ctx) { el('meChip').textContent = '—'; renderWho(); return; }
+    loadDraft();
+    const m = ctx.member, g = ctx.group, c = R.caseOf(g.caseId);
+    ctx.c = c;
+    el('meChip').textContent = g.label + ' · ' + m.role;
+    el('meBand').style.background = RC[m.r];
+    el('meCase').textContent = g.label + ' · ' + (c ? c.title : '');
+    el('meRole').textContent = m.role;
+    el('meWho').textContent = m.name + (m.lead ? ' · 조장' : '');
+    renderAll();
+  }
+
+  function renderCase() {
+    const c = ctx.c, open = LAWSTEPS.can(ST, 'read');
+    el('caseLock').hidden = open; el('caseCard').hidden = !open;
+    if (!open || !c) return;
+    el('cTitle').textContent = '상담 신청서 · ' + c.client;
+    el('cSub').textContent = c.age + ' · ' + c.line;
+    el('cStory').innerHTML = c.story.map((p) => '<p>' + esc(p) + '</p>').join('');
+    el('cQs').innerHTML = RK.map((k, i) => '<div class="' + (i === ctx.member.r ? 'mine' : '') + '"><em style="color:' + RC[i] + '">' + esc(ROLES[i]) + (i === ctx.member.r ? ' · 나' : '') + '</em>' + esc(c.q[k].q) + '</div>').join('');
+    el('cEvs').innerHTML = c.evidence.map((e) => '<span>' + esc(e.no) + ' ' + esc(e.title) + '</span>').join('');
+  }
+
+  /* 의견서 */
+  function opServer() { return ((OPS['g' + ctx.group.g] || {})['r' + ctx.member.r]) || null; }
+  function opDraft() {
+    if (!draft.op) {
+      const s = opServer();
+      draft.op = s ? JSON.parse(JSON.stringify(s)) : { ev: [], evNote: '', laws: [{ name: '', art: '', mine: '' }, { name: '', art: '', mine: '' }], judge: '', advice: '', more: '' };
+    }
+    return draft.op;
+  }
+  const OPF = { opEvNote: 'evNote', opJudge: 'judge', opAdvice: 'advice', opMore: 'more' };
+  function renderOp() {
+    const c = ctx.c, k = RK[ctx.member.r], q = c.q[k], gd = c.guide[k] || {};
+    el('opTask').innerHTML = '<div class="q">' + esc(q.q) + '</div>' +
+      '<div class="line"><span class="k m">필수</span><span>' + esc(gd.must || '') + '</span></div>' +
+      '<div class="line"><span class="k o">더 찾아보기</span><span>' + esc(gd.more || '') + '</span></div>' +
+      '<div class="line"><span class="k o">찾아볼 곳</span><span>' + esc(q.hint) + '</span></div>' +
+      (gd.clue ? '<div class="clue"><b>판단 단서</b>' + esc(gd.clue) + '</div>' : '') +
+      (gd.concept ? '<div class="cpt"><b>개념 카드</b>' + gd.concept.map((x) => '<div><em>' + esc(x[0]) + '</em>' + esc(x[1]) + '</div>').join('') + '</div>' : '');
+    const open = LAWSTEPS.can(ST, 'op'), step = (ST && ST.step) || 0;
+    el('opLock').hidden = open;
+    el('opLock').textContent = step < 1 ? '선생님이 활동을 시작하면 쓸 수 있습니다.' : '의견서 제출이 마감되었습니다. 바꿀 것이 있으면 선생님께 말씀하세요.';
+    const d = opDraft();
+    el('opForm').querySelectorAll('input,textarea,button').forEach((x) => { if (x.id !== 'btnOp') x.disabled = !open; });
+    el('btnOp').disabled = !open;
+    el('opEv').innerHTML = c.evidence.map((e) => '<button type="button" data-no="' + esc(e.no) + '" aria-pressed="' + (d.ev.indexOf(e.no) >= 0) + '"' + (open ? '' : ' disabled') + '>' + esc(e.no) + '</button>').join('');
+    el('opEv').querySelectorAll('button').forEach((b) => b.onclick = function () {
+      const n = this.dataset.no, i = d.ev.indexOf(n); if (i >= 0) d.ev.splice(i, 1); else d.ev.push(n);
+      this.setAttribute('aria-pressed', i < 0); saveDraft();
+    });
+    Object.keys(OPF).forEach((id) => { if (document.activeElement !== el(id)) el(id).value = d[OPF[id]] || ''; });
+    [0, 1].forEach((i) => { ['n', 'a', 'm'].forEach((f) => { const x = el('l' + i + f); const key = { n: 'name', a: 'art', m: 'mine' }[f]; if (document.activeElement !== x) x.value = (d.laws[i] || {})[key] || ''; }); });
+    const s = opServer();
+    el('opSent').hidden = !s;
+    if (s) el('opSent').textContent = clock(s.at) + ' 제출됨 · 다시 내면 새 내용으로 바뀝니다';
+  }
+  Object.keys(OPF).forEach((id) => { el(id).oninput = function () { opDraft()[OPF[id]] = this.value; this.classList.remove('bad'); saveDraft(); }; });
+  [0, 1].forEach((i) => ['n', 'a', 'm'].forEach((f) => {
+    el('l' + i + f).oninput = function () { const d = opDraft(); d.laws[i] = d.laws[i] || {}; d.laws[i][{ n: 'name', a: 'art', m: 'mine' }[f]] = this.value; this.classList.remove('bad'); saveDraft(); };
+  }));
+  function ask(t, p) {
+    return new Promise((res) => { el('mT').textContent = t; el('mP').textContent = p; el('modal').hidden = false;
+      el('mYes').onclick = () => { el('modal').hidden = true; res(true); }; el('mNo').onclick = () => { el('modal').hidden = true; res(false); }; });
+  }
+  el('btnOp').onclick = async function () {
+    const d = opDraft(), note = el('opNote'); let first = null;
+    const need = [['l0n', (d.laws[0] || {}).name], ['l0a', (d.laws[0] || {}).art], ['l0m', (d.laws[0] || {}).mine], ['opJudge', d.judge], ['opAdvice', d.advice]];
+    need.forEach(([id, v]) => { if (!String(v || '').trim()) { el(id).classList.add('bad'); first = first || el(id); } });
+    if (first) { note.className = 'note warn'; note.textContent = '필수 조문(법 이름, 조·항, 내 말로), 나의 판단, 조언을 채워 주세요.'; first.focus(); first.scrollIntoView({ block: 'center', behavior: 'smooth' }); return; }
+    if (d.judge.trim().length < 30 || d.advice.trim().length < 15) {
+      if (!(await ask('조금 짧아요', '판단은 증거와 조문을 연결해 두세 문장, 조언은 의뢰인이 할 일을 한두 문장으로 쓰면 좋습니다. 그래도 지금 낼까요?'))) return;
+    }
+    const btn = this; btn.disabled = true; btn.textContent = '보내는 중…';
+    LAWDB.submitOp(ctx.group.g, ctx.member.r, Object.assign({}, d, { name: ctx.member.name, sid: ctx.member.sid, role: ctx.member.role }))
+      .then(() => { note.className = 'note ok'; note.textContent = '제출했습니다. 합동 보고서 탭에서 조원들의 의견서를 볼 수 있습니다.'; })
+      .catch(() => { note.className = 'note warn'; note.textContent = '보내지 못했습니다. 인터넷을 확인하고 다시 눌러 주세요. 쓴 내용은 이 휴대폰에 남아 있습니다.'; })
+      .finally(() => { btn.disabled = false; btn.textContent = '의견서 제출'; });
+  };
+
+  /* 합동 보고서 */
+  function repServer() { return REPS['g' + ctx.group.g] || null; }
+  function repDraft() {
+    if (!draft.rep) {
+      const s = repServer();
+      draft.rep = s ? JSON.parse(JSON.stringify(s)) : { cross: [{ issue: '', roles: [], concl: '' }, { issue: '', roles: [], concl: '' }], todo: [{ what: '', why: '', role: '' }, { what: '', why: '', role: '' }, { what: '', why: '', role: '' }], presenter: '' };
+      draft.rep.cross = draft.rep.cross || []; draft.rep.todo = draft.rep.todo || [];
+    }
+    return draft.rep;
+  }
+  let takeRep = false;
+  function renderRep() {
+    const g = ctx.group, ops = OPS['g' + g.g] || {};
+    el('peers').innerHTML = g.members.map((m) => {
+      const o = ops['r' + m.r];
+      if (!o) return '<div class="peer empty"><b style="color:' + RC[m.r] + '">' + esc(m.role) + '</b> · ' + esc(m.name) + ' — 아직 내지 않았습니다</div>';
+      return '<div class="peer"><h4 style="color:' + RC[m.r] + '">' + esc(m.role) + '<span>' + esc(m.name) + ' · ' + clock(o.at) + '</span></h4>' +
+        '<p><b>조문</b>' + esc(((o.laws || [])[0] || {}).name || '') + ' ' + esc(((o.laws || [])[0] || {}).art || '') + '</p>' +
+        '<p><b>판단</b>' + esc(o.judge) + '</p><p><b>조언</b>' + esc(o.advice) + '</p></div>';
+    }).join('');
+    const open = LAWSTEPS.can(ST, 'rep'), step = (ST && ST.step) || 0;
+    el('repLock').hidden = open;
+    el('repLock').textContent = step < 2 ? '보고서는 개인 검토가 시작되면 쓸 수 있습니다. 먼저 의견서를 쓰세요.' : '보고서 제출이 마감되었습니다.';
+    const lead = ctx.member.lead || takeRep, s = repServer();
+    el('repSub').textContent = lead ? '조장이 회의 내용을 받아 적어 대표로 제출합니다.' : '조장이 대표로 입력합니다. 조장이 없으면 아래 버튼으로 대신 입력하세요.';
+    el('btnTakeRep').hidden = lead || !open;
+    const editable = open && lead, d = repDraft();
+    if (el('repForm').contains(document.activeElement) && document.activeElement !== el('btnRep')) { el('repSent').hidden = !s; if (s) el('repSent').textContent = clock(s.at) + ' ' + (s.by || '') + ' 제출'; renderThanks(); return; }
+    el('crossBox').innerHTML = [0, 1].map((i) => { const x = d.cross[i] || {}; return '<div class="rbox"><h4>쟁점 ' + (i + 1) + '</h4>' +
+      '<input data-c="' + i + '" data-f="issue" maxlength="40" placeholder="쟁점 (예: 컵값을 월급에서 빼도 되나)" value="' + esc(x.issue || '') + '">' +
+      '<div class="rchips">' + ROLES.map((rn, r) => '<button type="button" data-c="' + i + '" data-r="' + r + '" aria-pressed="' + ((x.roles || []).indexOf(r) >= 0) + '">' + esc(rn) + '</button>').join('') + '</div>' +
+      '<textarea data-c="' + i + '" data-f="concl" maxlength="400" placeholder="우리 조의 결론과 근거">' + esc(x.concl || '') + '</textarea></div>'; }).join('');
+    el('todoBox').innerHTML = [0, 1, 2].map((i) => { const x = d.todo[i] || {}; return '<div class="rbox"><h4>' + (i + 1) + '순위</h4>' +
+      '<input data-t="' + i + '" data-f="what" maxlength="60" placeholder="할 일" value="' + esc(x.what || '') + '">' +
+      '<input data-t="' + i + '" data-f="why" maxlength="80" placeholder="이 순서인 이유" value="' + esc(x.why || '') + '">' +
+      '<select data-t="' + i + '" data-f="role"><option value="">담당 전문가</option>' + ROLES.map((rn) => '<option' + (x.role === rn ? ' selected' : '') + '>' + esc(rn) + '</option>').join('') + '</select></div>'; }).join('');
+    if (document.activeElement !== el('repPresenter')) el('repPresenter').value = d.presenter || '';
+    el('repForm').querySelectorAll('input,textarea,select,.rchips button').forEach((x) => x.disabled = !editable);
+    el('btnRep').disabled = !editable;
+    el('crossBox').querySelectorAll('input,textarea').forEach((x) => x.oninput = function () { const c = d.cross[+this.dataset.c] = d.cross[+this.dataset.c] || { roles: [] }; c[this.dataset.f] = this.value; saveDraft(); });
+    el('crossBox').querySelectorAll('.rchips button').forEach((b) => b.onclick = function () {
+      const c = d.cross[+this.dataset.c] = d.cross[+this.dataset.c] || { roles: [] }; c.roles = c.roles || [];
+      const r = +this.dataset.r, k = c.roles.indexOf(r); if (k >= 0) c.roles.splice(k, 1); else c.roles.push(r);
+      this.setAttribute('aria-pressed', k < 0); saveDraft(); });
+    el('todoBox').querySelectorAll('input,select').forEach((x) => x[x.tagName === 'SELECT' ? 'onchange' : 'oninput'] = function () { const t = d.todo[+this.dataset.t] = d.todo[+this.dataset.t] || {}; t[this.dataset.f] = this.value; saveDraft(); });
+    el('repSent').hidden = !s;
+    if (s) el('repSent').textContent = clock(s.at) + ' ' + (s.by || '') + ' 제출';
+    renderThanks();
+  }
+  el('repPresenter').oninput = function () { repDraft().presenter = this.value; saveDraft(); };
+  el('btnTakeRep').onclick = function () { takeRep = true; renderRep(); };
+  el('btnRep').onclick = function () {
+    const d = repDraft(), note = el('repNote');
+    const ok = (d.cross || []).filter((x) => x && String(x.issue || '').trim() && String(x.concl || '').trim()).length >= 1 &&
+      (d.todo || []).filter((x) => x && String(x.what || '').trim()).length >= 3;
+    if (!ok) { note.className = 'note warn'; note.textContent = '얽힌 쟁점을 하나 이상, 할 일 세 가지를 채워 주세요.'; return; }
+    const btn = this; btn.disabled = true; btn.textContent = '보내는 중…';
+    LAWDB.submitRep(ctx.group.g, Object.assign({}, d, { by: ctx.member.name, bySid: ctx.member.sid }))
+      .then(() => { note.className = 'note ok'; note.textContent = '보고서를 제출했습니다.'; })
+      .catch(() => { note.className = 'note warn'; note.textContent = '보내지 못했습니다. 다시 눌러 주세요.'; })
+      .finally(() => { btn.disabled = false; btn.textContent = '보고서 제출'; });
+  };
+
+  /* 회의 기록 · 고마운 점 — 다음 역할 친구에게 */
+  function toMember() { const ms = ctx.group.members; const i = ms.findIndex((m) => m.sid === ctx.member.sid); return ms[(i + 1) % ms.length]; }
+  function renderThanks() {
+    const t = toMember(), s = ((THX['g' + ctx.group.g] || {})['r' + ctx.member.r]) || null;
+    el('thToLabel').innerHTML = '<i>♥</i>' + esc(t.name) + '(' + esc(t.role) + ')에게 고마운 점';
+    if (!draft.th) draft.th = s ? { did: s.did || '', text: s.text || '' } : { did: '', text: '' };
+    if (document.activeElement !== el('thDid')) el('thDid').value = draft.th.did || '';
+    if (document.activeElement !== el('thText')) el('thText').value = draft.th.text || '';
+    const open = LAWSTEPS.can(ST, 'thanks');
+    ['thDid', 'thText', 'btnTh'].forEach((id) => el(id).disabled = !open);
+    if (!open) { el('thNote').className = 'note'; el('thNote').textContent = '합동 상담 회의가 시작되면 쓸 수 있습니다.'; } else if (el('thNote').textContent.indexOf('시작되면') >= 0) el('thNote').textContent = '';
+    el('thSent').hidden = !s; if (s) el('thSent').textContent = clock(s.at) + ' 제출됨';
+  }
+  el('thDid').oninput = function () { draft.th.did = this.value; saveDraft(); };
+  el('thText').oninput = function () { draft.th.text = this.value; saveDraft(); };
+  el('btnTh').onclick = function () {
+    const note = el('thNote');
+    if (!draft.th.did.trim() || !draft.th.text.trim()) { note.className = 'note warn'; note.textContent = '두 칸을 모두 채워 주세요.'; return; }
+    const t = toMember(), btn = this; btn.disabled = true;
+    LAWDB.submitThanks(ctx.group.g, ctx.member.r, { did: draft.th.did.trim(), text: draft.th.text.trim(), from: ctx.member.name, fromSid: ctx.member.sid, to: t.r, toName: t.name, toSid: t.sid })
+      .then(() => { note.className = 'note ok'; note.textContent = '제출했습니다.'; })
+      .catch(() => { note.className = 'note warn'; note.textContent = '보내지 못했습니다. 다시 눌러 주세요.'; })
+      .finally(() => { btn.disabled = false; });
+  };
+
+  /* 해설 */
+  function pubCount() { if (!PUB || !ctx) return 0; const p = ctx.group.caseId + '-'; return Object.keys(PUB).filter((k) => k.indexOf(p) === 0).length; }
+  function renderAns() {
+    const cid = ctx.group.caseId, P = PUB || {}, mine = ((OPS['g' + ctx.group.g] || {})['r' + ctx.member.r]) || null;
+    const part = (k, f) => P[cid + '-' + k + '-' + f];
+    let h = ROLES.map((rn, i) => {
+      const k = RK[i], head = P[cid + '-' + k + '-issue'] || {}, items = [['law', '근거 조문'], ['point', '핵심 판단'], ['advice', '의뢰인 조언'], ['miss', '흔한 오답']];
+      const body = items.map(([f, l]) => { const v = part(k, f); return v ? '<div class="' + (f === 'miss' ? 'miss' : '') + '"><b>' + l + '</b>' + (Array.isArray(v.text) ? v.text.map(esc).join('<br>') : esc(v.text)) + '</div>' : ''; }).join('');
+      return '<div class="ans' + (i === ctx.member.r ? ' mine' : '') + '"><h4 style="background:' + RC[i] + '">' + esc(rn) + (head.text ? '<small>' + esc(head.text) + '</small>' : '') + '</h4><div class="in">' +
+        (body || '<span class="wait">아직 공개되지 않았습니다</span>') +
+        (i === ctx.member.r && mine && body ? '<div class="minejudge"><b>내 판단</b>' + esc(mine.judge) + '</div>' : '') + '</div></div>';
+    }).join('');
+    const xs = [0, 1].map((i) => P[cid + '-x' + i]).filter(Boolean);
+    if (xs.length) h += '<div class="ans"><h4 style="background:var(--brand)">얽힌 쟁점</h4><div class="in">' + xs.map((x) => '<div><b>' + esc(x.head) + '</b>' + esc(x.text) + '</div>').join('') + '</div></div>';
+    el('ansBox').innerHTML = h;
+    el('reflectCard').hidden = !((ST && LAWSTEPS.at(ST.step).key === 'end') || (ST && ST.qr === 'reflect'));
+  }
+
+  /* 공통 */
+  let view = 'vCase';
+  document.querySelectorAll('.tabbar button').forEach((b) => b.onclick = function () {
+    view = this.dataset.v;
+    document.querySelectorAll('.tabbar button').forEach((x) => x.setAttribute('aria-selected', x === this));
+    ['vCase', 'vOp', 'vRep', 'vAns'].forEach((v) => el(v).hidden = v !== view);
+    if (view === 'vAns') { seenPub = pubCount(); el('ansDot').hidden = true; }
+    window.scrollTo({ top: 0 });
+  });
+  function renderTimer() {
+    const t = ST && ST.timer; const c = el('tChip');
+    if (!t) { c.hidden = true; return; }
+    const left = Math.max(0, Math.round(t.run ? (t.end - Date.now()) / 1000 : (t.left || 0)));
+    c.hidden = false; c.textContent = (t.run ? '⏱ ' : '⏸ ') + Math.floor(left / 60) + ':' + String(left % 60).padStart(2, '0');
+    c.classList.toggle('low', left <= 60);
+  }
+  setInterval(renderTimer, 1000);
+  function renderAll() {
+    if (!ctx) return;
+    const s = LAWSTEPS.at((ST && ST.step) || 0);
+    el('stepTxt').textContent = '지금: ' + s.name;
+    renderCase(); renderOp(); renderRep(); renderAns(); renderTimer();
+    const n = pubCount(); el('ansDot').hidden = !(n > seenPub && view !== 'vAns');
+    if (view === 'vAns') seenPub = n;
+    el('linkNote').textContent = { local: '연습 모드', online: '선생님 화면과 연결됨', offline: '연결이 끊겼습니다 · 다시 붙는 중', error: '연결하지 못했습니다', connecting: '연결 중' }[link] || '';
+  }
+
+  LAWDB.onSignups((o) => { SIGN = o || {}; const had = !!ctx; if (!ctx || (me && !R.find(SIGN, me.sid))) boot(); else { ctx = Object.assign(R.find(SIGN, me.sid), { c: ctx.c }); renderAll(); } if (!had && !ctx) renderWho(); });
+  LAWDB.onState((s) => { ST = s; renderAll(); });
+  LAWDB.onPub((p) => { PUB = p; renderAll(); });
+  LAWDB.onOps((o) => { OPS = o || {}; renderAll(); });
+  LAWDB.onReps((o) => { REPS = o || {}; renderAll(); });
+  LAWDB.onThanks((o) => { THX = o || {}; renderAll(); });
+  LAWDB.onStatus((s) => { link = s.state; renderAll(); });
+  boot();
+})();
+</script>
+</body>
+</html>
